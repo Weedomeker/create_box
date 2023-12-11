@@ -21,6 +21,7 @@
         rec: new makerjs.models.Rectangle(longueur, largeur),
       },
       paths: {
+        origin: new makerjs.paths.Circle([0, 0], 5),
         //Grands cotés
         h1: new makerjs.paths.Line([-hauteur, largeur + hauteur + ep], [longueur + hauteur, largeur + hauteur + ep]),
         h2: new makerjs.paths.Line([-hauteur, -hauteur - ep], [longueur + hauteur, -hauteur - ep]),
@@ -28,13 +29,19 @@
         //Petits cotés
         v1: new makerjs.paths.Line([- hauteur, - hauteur - ep], [- hauteur, largeur + hauteur + ep]),
         v2: new makerjs.paths.Line([longueur + hauteur, -hauteur - ep], [longueur + hauteur, largeur + hauteur + ep]),
-        left_h1: new makerjs.paths.Line([0, 0], [-longueur / 4, 0]),
-        left_h2: new makerjs.paths.Line([0, largeur], [-longueur / 4, largeur]),
-        left_v1: new makerjs.paths.Line([-longueur / 4, largeur], [-longueur / 4, 0]),
+        //Gauche
+        left_h1: new makerjs.paths.Line([0, ep], [-longueur / 4, ep]),
+        left_h2: new makerjs.paths.Line([0, largeur - ep], [-longueur / 4, largeur - ep]),
+        left_v1: new makerjs.paths.Line([-longueur / 4, largeur - ep], [-longueur / 4, ep]),
+        //Droite
+        right_h1: new makerjs.paths.Line([longueur + longueur / 4, ep], [longueur, ep]),
+        right_h2: new makerjs.paths.Line([longueur + longueur / 4, largeur - ep], [longueur, largeur - ep]),
+        right_v1: new makerjs.paths.Line([longueur + longueur / 4, largeur - ep], [longueur + longueur / 4, ep]),
       }
     };
     model.layer = "Layer 1"
-    model.models.rec.layer = "red"
+    model.paths.origin.layer = "red"
+    model.models.rec.layer = "green"
     model.paths.h1.layer = "orange"
     model.paths.h2.layer = "orange"
     model.paths.v1.layer = "orange"
