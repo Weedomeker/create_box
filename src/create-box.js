@@ -24,6 +24,5 @@ longueur = 1000
   } catch (error) {
     console.log(error)
   }
-}
 
-createBox()
+}

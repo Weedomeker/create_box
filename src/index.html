@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="http://maker.js.org/target/js/browser.maker.js" type="text/javascript"></script>
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    var makerjs = require('makerjs');
+    const largeur = 100
+    const longueur = 200
+    const hauteur = 20
+    const ep = 5
+
+    var model = {
+      models: {
+        rec: new makerjs.models.Rectangle(longueur, largeur),
+      },
+      paths: {
+        //Grands cotés
+        h1: new makerjs.paths.Line([-hauteur, largeur + hauteur + ep], [longueur + hauteur, largeur + hauteur + ep]),
+        h2: new makerjs.paths.Line([-hauteur, -hauteur - ep], [longueur + hauteur, -hauteur - ep]),
+
+        //Petits cotés
+        v1: new makerjs.paths.Line([- hauteur, - hauteur - ep], [- hauteur, largeur + hauteur + ep]),
+        v2: new makerjs.paths.Line([longueur + hauteur, -hauteur - ep], [longueur + hauteur, largeur + hauteur + ep]),
+        left_h1: new makerjs.paths.Line([0, 0], [-longueur / 4, 0]),
+        left_h2: new makerjs.paths.Line([0, largeur], [-longueur / 4, largeur]),
+        left_v1: new makerjs.paths.Line([-longueur / 4, largeur], [-longueur / 4, 0]),
+      }
+    };
+    model.layer = "Layer 1"
+    model.models.rec.layer = "red"
+    model.paths.h1.layer = "orange"
+    model.paths.h2.layer = "orange"
+    model.paths.v1.layer = "orange"
+    model.paths.v2.layer = "orange"
+
+    var svg = makerjs.exporter.toSVG(model);
+    document.write(svg);
+  </script>
+</body>
+
+</html>
