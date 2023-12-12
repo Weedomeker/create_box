@@ -10,42 +10,91 @@
 
 <body>
   <script>
-    var makerjs = require('makerjs');
-    const largeur = 100
-    const longueur = 200
-    const hauteur = 20
-    const ep = 5
+    const makerjs = require('makerjs');
+    const largeur = 100;
+    const longueur = 200;
+    const hauteur = 10;
+    const ep = 7;
 
-    var model = {
+    const model = {
       models: {
         rec: new makerjs.models.Rectangle(longueur, largeur),
       },
       paths: {
         origin: new makerjs.paths.Circle([0, 0], 5),
-        //Grands cotés
-        h1: new makerjs.paths.Line([-hauteur, largeur + hauteur + ep], [longueur + hauteur, largeur + hauteur + ep]),
-        h2: new makerjs.paths.Line([-hauteur, -hauteur - ep], [longueur + hauteur, -hauteur - ep]),
 
+        //Rainants
+        //Grands cotés
+        top: new makerjs.paths.Line([0, largeur + hauteur + ep], [longueur, largeur + hauteur + ep]),
+        bottom: new makerjs.paths.Line([0, -hauteur - ep], [longueur, -hauteur - ep]),
         //Petits cotés
-        v1: new makerjs.paths.Line([- hauteur, - hauteur - ep], [- hauteur, largeur + hauteur + ep]),
-        v2: new makerjs.paths.Line([longueur + hauteur, -hauteur - ep], [longueur + hauteur, largeur + hauteur + ep]),
+        left: new makerjs.paths.Line([- hauteur, + ep], [- hauteur, largeur - ep]),
+        right: new makerjs.paths.Line([longueur + hauteur, ep], [longueur + hauteur, largeur - ep]),
+
+
+        //DECOUPE
+        //haut
+        top_v1: new makerjs.paths.Line([0, largeur - ep], [0, (largeur * 2) + hauteur + ep]),
+        top_v2: new makerjs.paths.Line([longueur, largeur - ep], [longueur, (largeur * 2) + hauteur + ep]),
+        top_h1: new makerjs.paths.Line([0, (largeur * 2) + hauteur + ep], [longueur, (largeur * 2) + hauteur + ep]),
+        //bas
+        bottom_v1: new makerjs.paths.Line([0, (-largeur / 2) - hauteur], [0, ep]),
+        bottom_v2: new makerjs.paths.Line([longueur, (-largeur / 2) - hauteur], [longueur, ep]),
+        bottom_h1: new makerjs.paths.Line([0, -(largeur / 2) - hauteur], [longueur, -(largeur / 2) - hauteur]),
         //Gauche
-        left_h1: new makerjs.paths.Line([0, ep], [-longueur / 4, ep]),
-        left_h2: new makerjs.paths.Line([0, largeur - ep], [-longueur / 4, largeur - ep]),
-        left_v1: new makerjs.paths.Line([-longueur / 4, largeur - ep], [-longueur / 4, ep]),
+        left_h1: new makerjs.paths.Line([0, ep], [(-longueur / 4) - hauteur, ep]),
+        left_h2: new makerjs.paths.Line([0, largeur - ep], [(-longueur / 4) - hauteur, largeur - ep]),
+        left_v1: new makerjs.paths.Line([(-longueur / 4) - hauteur, largeur - ep], [(-longueur / 4) - hauteur, ep]),
         //Droite
-        right_h1: new makerjs.paths.Line([longueur + longueur / 4, ep], [longueur, ep]),
-        right_h2: new makerjs.paths.Line([longueur + longueur / 4, largeur - ep], [longueur, largeur - ep]),
-        right_v1: new makerjs.paths.Line([longueur + longueur / 4, largeur - ep], [longueur + longueur / 4, ep]),
+        right_h1: new makerjs.paths.Line([longueur + (longueur / 4) + hauteur, ep], [longueur, ep]),
+        right_h2: new makerjs.paths.Line([longueur + (longueur / 4) + hauteur, largeur - ep], [longueur, largeur - ep]),
+        right_v1: new makerjs.paths.Line([longueur + (longueur / 4) + hauteur, largeur - ep], [longueur + (longueur / 4) + hauteur, ep]),
       }
     };
     model.layer = "Layer 1"
-    model.paths.origin.layer = "red"
-    model.models.rec.layer = "green"
-    model.paths.h1.layer = "orange"
-    model.paths.h2.layer = "orange"
-    model.paths.v1.layer = "orange"
-    model.paths.v2.layer = "orange"
+    //origin
+    model.paths.origin.layer = "aqua"
+    //format base
+    model.models.rec.layer = "orange"
+    //hauteur
+    model.paths.top.layer = "orange"
+    model.paths.bottom.layer = "orange"
+    model.paths.left.layer = "orange"
+    model.paths.right.layer = "orange"
+    //decoupe
+    //haut
+    model.paths.top_v1.layer = 'red'
+    model.paths.top_v2.layer = 'red'
+    model.paths.top_h1.layer = 'red'
+    //bas
+    model.paths.bottom_v1.layer = 'red'
+    model.paths.bottom_v2.layer = 'red'
+    model.paths.bottom_h1.layer = 'red'
+    //gauche
+    model.paths.left_h1.layer = 'red'
+    model.paths.left_h2.layer = 'red'
+    model.paths.left_v1.layer = 'red'
+    //Droite
+    model.paths.right_h1.layer = 'red'
+    model.paths.right_h2.layer = 'red'
+    model.paths.right_v1.layer = 'red'
+
+
+    //makerjs.model.center(model.models.rec)
+
+
+    // const fil1 = makerjs.path.fillet(model.paths.left_h1, model.paths.left_v1, 10)
+    // model.paths.fil1 = fil1
+    // model.paths.fil1.layer = 'red'
+    // const fil2 = makerjs.path.fillet(model.paths.left_h2, model.paths.left_v1, 10)
+    // model.paths.fil2 = fil2
+    // model.paths.fil2.layer = 'red'
+    // const fil3 = makerjs.path.fillet(model.paths.right_h2, model.paths.right_v1, 10)
+    // model.paths.fil3 = fil3
+    // model.paths.fil3.layer = 'red'
+    // const fil4 = makerjs.path.fillet(model.paths.right_h1, model.paths.right_v1, 10)
+    // model.paths.fil4 = fil4
+    // model.paths.fil4.layer = 'red'
 
     var svg = makerjs.exporter.toSVG(model);
     document.write(svg);
