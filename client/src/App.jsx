@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import './App.css'
 import { Input, Form, Button, Icon } from 'semantic-ui-react'
-const HOST = import.meta.env.VITE_HOST;
+const HOST = 'localhost' || import.meta.env.VITE_HOST;
 const PORT = import.meta.env.VITE_PORT;
 
 function App() {
@@ -11,11 +11,11 @@ function App() {
    const form = e.target
    const formData = new FormData(form)
    const data = {
-    largeur: formData.get('largeur'),
-    longueur: formData.get('longueur'),
-    hauteur: formData.get('hauteur'),
-    marge: formData.get('marge'),
-    ep: formData.get('ep'),
+    width: formData.get('width'),
+    long: formData.get('long'),
+    height: formData.get('height'),
+    tickness: formData.get('tickness'),
+    smallsides: formData.get('smallsides'),
    }
 
      fetch(`http://${HOST}:${PORT}`,{
@@ -25,6 +25,8 @@ function App() {
    }).then((res) => {
     res.status == 200 ? console.log('Success') : console.log('error post data')
    }).catch(err => console.log(err))
+
+   form.reset()
 
  }
  
@@ -38,13 +40,13 @@ function App() {
  
  <Form onSubmit={handleSubmit} className='mx-auto content-center bg-slate-100 rounded-md p-4'>
   <Form.Group widths='equal' >
-    <Form.Field id='largeur' name='largeur' defaultValue={0} control={Input} label="Largeur(cm)"/>
-    <Form.Field id='longueur' name='longueur' defaultValue={0} control={Input} label="Longueur(cm)"/>
-    <Form.Field id='hauteur' name='hauteur' defaultValue={0} control={Input} label="Hauteur(cm)"/>
+    <Form.Field type='number' id='width' name='width' defaultValue={0} control={Input} label="Largeur (cm)"/>
+    <Form.Field type='number' id='long' name='long' defaultValue={0} control={Input} label="Longueur (cm)"/>
+    <Form.Field type='number' id='height' name='height' defaultValue={0} control={Input} label="Hauteur (cm)"/>
   </Form.Group>
   <Form.Group widths='equal'>
-    <Form.Field id='marge' name='marge' defaultValue={0} control={Input} label="Marge(cm)" className='max-w-xs'/>
-    <Form.Field id='ep' name='ep' defaultValue={0} control={Input} label="Epaisseur(cm)" className='max-w-xs'/>
+    <Form.Field id='tickness' name='tickness' defaultValue={0} control={Input} label="Epaisseur (cm)" className='max-w-xs'/>
+    <Form.Field type='number' id='smallsides' name='smallsides' defaultValue={0} control={Input} label="Petits cotés (cm)" className='max-w-xs'/>
   </Form.Group>
   <Button type='submit' primary compact content='Valider' />
  </Form>

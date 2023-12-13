@@ -5,56 +5,48 @@ const mmToPoint = (n1) => {
   return n1 * 2.8346438836889
 }
 
-function createBox(largeur, longueur, hauteur, marge, ep) {
-   largeur = 100;
-   longueur = 200;
-   hauteur = 10;
-   ep = 0.7;
-   const smallSides =  20
-   const arround = {
-    enabled: true,
-    value: 10
-   }
+ async function createBox(width, long, height, tickness, smallSides, arround = {enabled: false, value: 0}) {
+  
 
   const model = {
     models: {
-      rec: new makerjs.models.Rectangle(longueur, largeur),
+      rec: new makerjs.models.Rectangle(long, width),
     },
     paths: {
 
       //Rainants
       //Grands cotés
-      top: new makerjs.paths.Line([0, largeur + hauteur + ep], [longueur, largeur + hauteur + ep]),
-      bottom: new makerjs.paths.Line([0, -hauteur - ep], [longueur, -hauteur - ep]),
+      top: new makerjs.paths.Line([0, width + height + tickness], [long, width + height + tickness]),
+      bottom: new makerjs.paths.Line([0, -height - tickness], [long, -height - tickness]),
       //Petits cotés
-      left: new makerjs.paths.Line([- hauteur, + ep], [- hauteur, largeur - ep]),
-      right: new makerjs.paths.Line([longueur + hauteur, ep], [longueur + hauteur, largeur - ep]),
+      left: new makerjs.paths.Line([- height, + tickness], [- height, width - tickness]),
+      right: new makerjs.paths.Line([long + height, tickness], [long + height, width - tickness]),
 
 
       //DECOUPE
       //haut
-      top_v1: new makerjs.paths.Line([0, largeur - ep], [0, (largeur * 2) + hauteur + ep]),
-      top_v2: new makerjs.paths.Line([longueur, largeur - ep], [longueur, (largeur * 2) + hauteur + ep]),
-      top_h1: new makerjs.paths.Line([0, (largeur * 2) + hauteur + ep], [longueur, (largeur * 2) + hauteur + ep]),
+      top_v1: new makerjs.paths.Line([0, width - tickness], [0, (width * 2) + height + tickness]),
+      top_v2: new makerjs.paths.Line([long, width - tickness], [long, (width * 2) + height + tickness]),
+      top_h1: new makerjs.paths.Line([0, (width * 2) + height + tickness], [long, (width * 2) + height + tickness]),
       //bas
-      bottom_v1: new makerjs.paths.Line([0, (-largeur / 2) - hauteur], [0, ep]),
-      bottom_v2: new makerjs.paths.Line([longueur, (-largeur / 2) - hauteur], [longueur, ep]),
-      bottom_h1: new makerjs.paths.Line([0, -(largeur / 2) - hauteur], [longueur, -(largeur / 2) - hauteur]),
+      bottom_v1: new makerjs.paths.Line([0, (-width / 2) - height], [0, tickness]),
+      bottom_v2: new makerjs.paths.Line([long, (-width / 2) - height], [long, tickness]),
+      bottom_h1: new makerjs.paths.Line([0, -(width / 2) - height], [long, -(width / 2) - height]),
       //Gauche
-      left_h1: new makerjs.paths.Line([0, ep], [-smallSides - hauteur, ep]),
-      left_h2: new makerjs.paths.Line([0, largeur - ep], [-smallSides - hauteur, largeur - ep]),
-      left_v1: new makerjs.paths.Line([-smallSides - hauteur, largeur - ep], [-smallSides - hauteur, ep]),
+      left_h1: new makerjs.paths.Line([0, tickness], [-smallSides - height, tickness]),
+      left_h2: new makerjs.paths.Line([0, width - tickness], [-smallSides - height, width - tickness]),
+      left_v1: new makerjs.paths.Line([-smallSides - height, width - tickness], [-smallSides - height, tickness]),
       //Droite
-      right_h1: new makerjs.paths.Line([longueur + smallSides + hauteur, ep], [longueur, ep]),
-      right_h2: new makerjs.paths.Line([longueur + smallSides + hauteur, largeur - ep], [longueur, largeur - ep]),
-      right_v1: new makerjs.paths.Line([longueur + smallSides + hauteur, largeur - ep], [longueur + smallSides + hauteur, ep]),
+      right_h1: new makerjs.paths.Line([long + smallSides + height, tickness], [long, tickness]),
+      right_h2: new makerjs.paths.Line([long + smallSides + height, width - tickness], [long, width - tickness]),
+      right_v1: new makerjs.paths.Line([long + smallSides + height, width - tickness], [long + smallSides + height, tickness]),
     }
   };
   model.layer = "dec"
   
   //format base
   model.models.rec.layer = "orange"
-  //hauteur
+  //height
   model.paths.top.layer = "orange"
   model.paths.bottom.layer = "orange"
   model.paths.left.layer = "orange"
@@ -94,16 +86,24 @@ if(arround.enabled){
   const fil4 = makerjs.path.fillet(model.paths.right_h1, model.paths.right_v1, arround.value)
   model.paths.fil4 = fil4
   model.paths.fil4.layer = 'red'
-}
+} 
 
   const svg = makerjs.exporter.toSVG(model);
   const dxf = makerjs.exporter.toDXF(model, {units: 'cm', layerOptions:{"dec":{color: 2}}})
+
   try {
-    fs.writeFileSync(`${largeur}x${longueur}x${hauteur}.dxf`, dxf)
-    console.log('Success write')
+    //${width}x${long}x${height}.dxf
+   if( fs.existsSync(`./temp/`)){
+    await fs.writeFileSync(`./temp/box_${width}x${long}x${height}cm.dxf`, dxf)
+
+   }else{
+    await fs.mkdirSync(`./temp/`)
+    await fs.writeFileSync(`./temp/box_${width}x${long}x${height}cm.dxf`, dxf)
+   }
   } catch (error) {
     console.log(error)
   }
 
 }
-createBox()
+
+module.exports = createBox
