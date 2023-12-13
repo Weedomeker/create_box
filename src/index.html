@@ -11,10 +11,11 @@
 <body>
   <script>
     const makerjs = require('makerjs');
-    const largeur = 100;
-    const longueur = 200;
+    const largeur = 50;
+    const longueur = 150;
     const hauteur = 10;
-    const ep = 7;
+    const ep = 0.7;
+    const arround = 0
 
     const model = {
       models: {
@@ -83,18 +84,20 @@
     //makerjs.model.center(model.models.rec)
 
 
-    // const fil1 = makerjs.path.fillet(model.paths.left_h1, model.paths.left_v1, 10)
-    // model.paths.fil1 = fil1
-    // model.paths.fil1.layer = 'red'
-    // const fil2 = makerjs.path.fillet(model.paths.left_h2, model.paths.left_v1, 10)
-    // model.paths.fil2 = fil2
-    // model.paths.fil2.layer = 'red'
-    // const fil3 = makerjs.path.fillet(model.paths.right_h2, model.paths.right_v1, 10)
-    // model.paths.fil3 = fil3
-    // model.paths.fil3.layer = 'red'
-    // const fil4 = makerjs.path.fillet(model.paths.right_h1, model.paths.right_v1, 10)
-    // model.paths.fil4 = fil4
-    // model.paths.fil4.layer = 'red'
+    if (arround > 0) {
+      const fil1 = makerjs.path.fillet(model.paths.left_h1, model.paths.left_v1, arround)
+      model.paths.fil1 = fil1
+      model.paths.fil1.layer = 'red'
+      const fil2 = makerjs.path.fillet(model.paths.left_h2, model.paths.left_v1, arround)
+      model.paths.fil2 = fil2
+      model.paths.fil2.layer = 'red'
+      const fil3 = makerjs.path.fillet(model.paths.right_h2, model.paths.right_v1, arround)
+      model.paths.fil3 = fil3
+      model.paths.fil3.layer = 'red'
+      const fil4 = makerjs.path.fillet(model.paths.right_h1, model.paths.right_v1, arround)
+      model.paths.fil4 = fil4
+      model.paths.fil4.layer = 'red'
+    }
 
     var svg = makerjs.exporter.toSVG(model);
     document.write(svg);

@@ -5,7 +5,7 @@ const mmToPoint = (n1) => {
   return n1 * 2.8346438836889
 }
 
- async function createBox(width, long, height, tickness, smallSides, arround = {enabled: false, value: 0}) {
+ async function createBox(width, long, height, tickness, smallSides, arround) {
   
 
   const model = {
@@ -73,17 +73,17 @@ const mmToPoint = (n1) => {
   //makerjs.model.center(model.models.rec)
 
 
-if(arround.enabled){
-  const fil1 = makerjs.path.fillet(model.paths.left_h1, model.paths.left_v1, arround.value)
+if(arround > 0){
+  const fil1 = makerjs.path.fillet(model.paths.left_h1, model.paths.left_v1, arround)
   model.paths.fil1 = fil1
   model.paths.fil1.layer = 'red'
-  const fil2 = makerjs.path.fillet(model.paths.left_h2, model.paths.left_v1, arround.value)
+  const fil2 = makerjs.path.fillet(model.paths.left_h2, model.paths.left_v1, arround)
   model.paths.fil2 = fil2
   model.paths.fil2.layer = 'red'
-  const fil3 = makerjs.path.fillet(model.paths.right_h2, model.paths.right_v1, arround.value)
+  const fil3 = makerjs.path.fillet(model.paths.right_h2, model.paths.right_v1, arround)
   model.paths.fil3 = fil3
   model.paths.fil3.layer = 'red'
-  const fil4 = makerjs.path.fillet(model.paths.right_h1, model.paths.right_v1, arround.value)
+  const fil4 = makerjs.path.fillet(model.paths.right_h1, model.paths.right_v1, arround)
   model.paths.fil4 = fil4
   model.paths.fil4.layer = 'red'
 } 
@@ -93,12 +93,12 @@ if(arround.enabled){
 
   try {
     //${width}x${long}x${height}.dxf
-   if( fs.existsSync(`./temp/`)){
-    await fs.writeFileSync(`./temp/box_${width}x${long}x${height}cm.dxf`, dxf)
+   if( fs.existsSync(`./public/temp/`)){
+    await fs.writeFileSync(`./public/temp/box_${width}x${long}x${height}cm.dxf`, dxf)
 
    }else{
-    await fs.mkdirSync(`./temp/`)
-    await fs.writeFileSync(`./temp/box_${width}x${long}x${height}cm.dxf`, dxf)
+    await fs.mkdirSync(`./public/temp/`,{recursive: true})
+    await fs.writeFileSync(`./public/temp/box_${width}x${long}x${height}cm.dxf`, dxf)
    }
   } catch (error) {
     console.log(error)
