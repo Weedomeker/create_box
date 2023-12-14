@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 app.post('/', (req, res) => {
   data = [];
   data.push(req.body);
-  console.log(data[0]);
+  console.log('Center= ', data[0].center);
   createBox(
     parseFloat(data[0].width),
     parseFloat(data[0].long),
@@ -44,7 +44,7 @@ app.get('/download', async (req, res) => {
   const files = fs.readdirSync('./public/temp/');
   files.forEach((file) => {
     if (path.extname(file) == '.dxf') fileDownload = file;
-    console.log(file);
+    console.log('✔️', file);
   });
 
   res.download('./public/temp/' + fileDownload, (err) => {

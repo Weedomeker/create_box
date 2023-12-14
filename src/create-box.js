@@ -28,9 +28,9 @@ async function createBox(width, long, height, tickness, smallSides, arround, cen
         [long, width * center + height + tickness],
       ),
       //bas
-      bottom_v1: new makerjs.paths.Line([0, -width / 2 - height], [0, tickness]),
-      bottom_v2: new makerjs.paths.Line([long, -width / 2 - height], [long, tickness]),
-      bottom_h1: new makerjs.paths.Line([0, -(width / 2) - height], [long, -(width / 2) - height]),
+      bottom_v1: new makerjs.paths.Line([0, -smallSides - height], [0, tickness]),
+      bottom_v2: new makerjs.paths.Line([long, -smallSides - height], [long, tickness]),
+      bottom_h1: new makerjs.paths.Line([0, -smallSides - height], [long, -smallSides - height]),
       //Gauche
       left_h1: new makerjs.paths.Line([0, tickness], [-smallSides - height, tickness]),
       left_h2: new makerjs.paths.Line([0, width - tickness], [-smallSides - height, width - tickness]),

@@ -1,17 +1,18 @@
 /* eslint-disable no-undef */
 import './App.css';
-import { Form, Button, Icon, Label } from 'semantic-ui-react';
+import { Form, Button, Icon, Label, FormCheckbox, Radio } from 'semantic-ui-react';
 import { useEffect, useState } from 'react';
 const HOST = 'localhost' || import.meta.env.VITE_HOST;
 const PORT = import.meta.env.VITE_PORT;
 
 function App() {
+  const [checked, setChecked] = useState(false);
   const [format, setFormat] = useState(null);
   const [state, setState] = useState({
     width: 0,
     long: 0,
     height: 0,
-    tickness: 0,
+    tickness: 0.7,
     smallsides: 0,
     arround: 0,
     center: 2,
@@ -25,29 +26,29 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const form = e.target;
-    const formData = new FormData(form);
-    const data = {
-      width: formData.get('width'),
-      long: formData.get('long'),
-      height: formData.get('height'),
-      tickness: formData.get('tickness'),
-      smallsides: formData.get('smallsides'),
-      arround: formData.get('arround'),
-      center: formData.get('center'),
-    };
 
     fetch(`http://${HOST}:${PORT}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+      body: JSON.stringify(state),
     })
       .then((res) => {
         res.status == 200 ? console.log('Success') : console.log('error post data');
       })
       .catch((err) => console.log(err));
 
-    form.reset();
+    //RESET
+    setChecked(false);
+    setState({
+      width: 0,
+      long: 0,
+      height: 0,
+      tickness: 0,
+      smallsides: 0,
+      arround: 0,
+      center: 2,
+    });
+
     fetch(`http://${HOST}:${PORT}/download`, {
       method: 'GET',
       headers: {
@@ -60,7 +61,7 @@ function App() {
         const url = window.URL.createObjectURL(new Blob([blob]));
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', `${data.width}x${data.long}x${data.height}cm.dxf`);
+        link.setAttribute('download', `${state.width}x${state.long}x${state.height}cm.dxf`);
 
         // Append to html link element page
         document.body.appendChild(link);
@@ -86,7 +87,7 @@ function App() {
         </h1>
       </div>
 
-      <Form onSubmit={handleSubmit} className=" mx-auto h-1/2 content-center bg-gray-600 rounded-md p-4 ">
+      <Form onSubmit={handleSubmit} className=" mx-auto h-2/3 content-center bg-gray-600 rounded-md p-4 ">
         <Form.Group widths="equal" className="pb-4 py-5">
           <Form.Field className="text-zinc-100">
             <Form.Input
@@ -122,18 +123,8 @@ function App() {
             />
           </Form.Field>
         </Form.Group>
-        <Form.Group widths="equal" className="pb-4">
-          <Form.Field>
-            <Form.Input
-              type="number"
-              step="any"
-              id="tickness"
-              name="tickness"
-              defaultValue={0}
-              label="Epaisseur(cm)"
-              onChange={handleChange}
-            />
-          </Form.Field>
+
+        <Form.Group className="pb-4" grouped>
           <Form.Field>
             <Form.Input
               type="number"
@@ -156,17 +147,38 @@ function App() {
               onChange={handleChange}
             />
           </Form.Field>
+          <Form.Group className="py-4" inline>
+            <Label content="Epaisseur carton:" size="large" color="red" />
+            <Form.Field>
+              <Radio
+                label="7mm"
+                name="tickness"
+                value={0.7}
+                checked={state.tickness === 0.7}
+                onChange={() => setState({ ...state, tickness: 0.7 })}
+              />
+            </Form.Field>
+            <Form.Field>
+              <Radio
+                label="3mm"
+                name="tickness"
+                value={state.tickness}
+                checked={state.tickness === 0.3}
+                onChange={() => setState({ ...state, tickness: 0.3 })}
+              />
+            </Form.Field>
+          </Form.Group>
           <Form.Field>
-            <Form.Input
-              type="number"
-              step="0.5"
-              min="1.5"
-              max="2"
+            <FormCheckbox
+              toggle
               id="center"
               name="center"
-              defaultValue={2}
               label="Centrer fermeture"
-              onChange={handleChange}
+              onChange={(e, data) => {
+                setChecked(data.checked);
+                setState({ ...state, center: data.checked ? 1.5 : 2 });
+              }}
+              checked={checked}
             />
           </Form.Field>
         </Form.Group>
