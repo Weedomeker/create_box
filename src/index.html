@@ -11,11 +11,12 @@
 <body>
   <script>
     const makerjs = require('makerjs');
-    const largeur = 50;
-    const longueur = 150;
+    const largeur = 100;
+    const longueur = 300;
     const hauteur = 10;
     const ep = 0.7;
     const arround = 0
+    const center = 1.5
 
     const model = {
       models: {
@@ -35,9 +36,9 @@
 
         //DECOUPE
         //haut
-        top_v1: new makerjs.paths.Line([0, largeur - ep], [0, (largeur * 2) + hauteur + ep]),
-        top_v2: new makerjs.paths.Line([longueur, largeur - ep], [longueur, (largeur * 2) + hauteur + ep]),
-        top_h1: new makerjs.paths.Line([0, (largeur * 2) + hauteur + ep], [longueur, (largeur * 2) + hauteur + ep]),
+        top_v1: new makerjs.paths.Line([0, largeur - ep], [0, (largeur * center) + hauteur + ep]),
+        top_v2: new makerjs.paths.Line([longueur, largeur - ep], [longueur, (largeur * center) + hauteur + ep]),
+        top_h1: new makerjs.paths.Line([0, (largeur * center) + hauteur + ep], [longueur, (largeur * center) + hauteur + ep]),
         //bas
         bottom_v1: new makerjs.paths.Line([0, (-largeur / 2) - hauteur], [0, ep]),
         bottom_v2: new makerjs.paths.Line([longueur, (-largeur / 2) - hauteur], [longueur, ep]),
