@@ -168,7 +168,7 @@ function App() {
               />
             </Form.Field>
           </Form.Group>
-          <Form.Field>
+          {/* <Form.Field>
             <FormCheckbox
               toggle
               id="center"
@@ -181,7 +181,7 @@ function App() {
               checked={checked}
             />
           </Form.Field>
-        </Form.Group>
+        </Form.Group> */}
 
         <Button type="submit" color="vk" content="Valider" />
         <div className="mt-20">
