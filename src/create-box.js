@@ -5,7 +5,7 @@ const mmToPoint = (n1) => {
   return n1 * 2.8346438836889;
 };
 
-async function createBox(width, long, height, tickness, smallSides, arround, center) {
+async function createBox(width, long, height, tickness, smallsides, bottomside, arround, center) {
   const model = {
     models: {
       rec: new makerjs.models.Rectangle(long, width),
@@ -28,19 +28,19 @@ async function createBox(width, long, height, tickness, smallSides, arround, cen
         [long, width * center + height + tickness],
       ),
       //bas
-      bottom_v1: new makerjs.paths.Line([0, -smallSides - height], [0, tickness]),
-      bottom_v2: new makerjs.paths.Line([long, -smallSides - height], [long, tickness]),
-      bottom_h1: new makerjs.paths.Line([0, -smallSides - height], [long, -smallSides - height]),
+      bottom_v1: new makerjs.paths.Line([0, -bottomside - height - tickness], [0, tickness]),
+      bottom_v2: new makerjs.paths.Line([long, -bottomside - height - tickness], [long, tickness]),
+      bottom_h1: new makerjs.paths.Line([0, -bottomside - height - tickness], [long, -bottomside - height - tickness]),
       //Gauche
-      left_h1: new makerjs.paths.Line([0, tickness], [-smallSides - height, tickness]),
-      left_h2: new makerjs.paths.Line([0, width - tickness], [-smallSides - height, width - tickness]),
-      left_v1: new makerjs.paths.Line([-smallSides - height, width - tickness], [-smallSides - height, tickness]),
+      left_h1: new makerjs.paths.Line([0, tickness], [-smallsides - height, tickness]),
+      left_h2: new makerjs.paths.Line([0, width - tickness], [-smallsides - height, width - tickness]),
+      left_v1: new makerjs.paths.Line([-smallsides - height, width - tickness], [-smallsides - height, tickness]),
       //Droite
-      right_h1: new makerjs.paths.Line([long + smallSides + height, tickness], [long, tickness]),
-      right_h2: new makerjs.paths.Line([long + smallSides + height, width - tickness], [long, width - tickness]),
+      right_h1: new makerjs.paths.Line([long + smallsides + height, tickness], [long, tickness]),
+      right_h2: new makerjs.paths.Line([long + smallsides + height, width - tickness], [long, width - tickness]),
       right_v1: new makerjs.paths.Line(
-        [long + smallSides + height, width - tickness],
-        [long + smallSides + height, tickness],
+        [long + smallsides + height, width - tickness],
+        [long + smallsides + height, tickness],
       ),
     },
   };

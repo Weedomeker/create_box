@@ -32,6 +32,7 @@ app.post('/', (req, res) => {
     parseFloat(data[0].height),
     parseFloat(data[0].tickness),
     parseFloat(data[0].smallsides),
+    parseFloat(data[0].bottomside),
     parseFloat(data[0].arround),
     parseFloat(data[0].center),
   );
