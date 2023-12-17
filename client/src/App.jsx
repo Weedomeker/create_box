@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import './App.css';
-import { Form, Button, Icon, Label, Radio, Checkbox, Header } from 'semantic-ui-react';
+import { Form, Button, Icon, Label, Radio, Checkbox } from 'semantic-ui-react';
 import { useEffect, useState } from 'react';
 const HOST = import.meta.env.VITE_HOST;
 
