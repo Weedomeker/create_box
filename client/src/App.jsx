@@ -1,9 +1,8 @@
 /* eslint-disable no-undef */
 import './App.css';
-import { Form, Button, Icon, Label, Radio, Checkbox } from 'semantic-ui-react';
+import { Form, Button, Icon, Label, Radio, Checkbox, Header } from 'semantic-ui-react';
 import { useEffect, useState } from 'react';
-const HOST = 'localhost' || import.meta.env.VITE_HOST;
-const PORT = import.meta.env.VITE_PORT;
+const HOST = import.meta.env.VITE_HOST;
 
 function App() {
   const [checked, setChecked] = useState(false);
@@ -30,8 +29,9 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch(`http://${HOST}:${PORT}`, {
+    fetch(`https://${HOST}`, {
       method: 'POST',
+      mode: 'cors',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(state),
     })
@@ -53,8 +53,9 @@ function App() {
       center: 2,
     });
 
-    fetch(`http://${HOST}:${PORT}/download`, {
+    fetch(`https://${HOST}/download`, {
       method: 'GET',
+      mode: 'cors',
       headers: {
         'Content-Type': 'application/dxf',
       },
@@ -83,17 +84,20 @@ function App() {
   };
 
   return (
-    <div className="w-full mx-auto px-40 h-screen max-h-screen bg-zinc-800 ">
-      <div className="pb-10 pt-20">
+    <div className="w-auto h-screen bg-zinc-800 ">
+      <div className="pb-2 pt-4 md:pb-10 md:pt-20">
         <h1 className="text-zinc-300 font-extralight uppercase tracking-widest text-center">
           Create B
           <Icon name="box" size="small" circular className="bg-amber-600 text-zinc-800" />x
         </h1>
       </div>
 
-      <Form onSubmit={handleSubmit} className=" mx-auto bg-gray-600 rounded-md p-4">
-        <Form.Group widths="equal" className="flex flex-col pb-6">
-          <Form.Field className="pb-4">
+      <Form
+        onSubmit={handleSubmit}
+        className="h-full rounded-md p-8 md:h-2/4 md:max-w-lg md:w-fit md:mx-auto  bg-gray-600 "
+      >
+        <Form.Group widths="equal" className="flex flex-col pb-10 md:flex md:flex-col md:w-full md:pb-15">
+          <Form.Field className="md:pb-4">
             <Form.Input
               type="number"
               step="any"
@@ -104,7 +108,7 @@ function App() {
               onChange={handleChange}
             />
           </Form.Field>
-          <Form.Field className="pb-4">
+          <Form.Field>
             <Form.Input
               type="number"
               step="any"
@@ -115,7 +119,7 @@ function App() {
               onChange={handleChange}
             />
           </Form.Field>
-          <Form.Field className="pb-4">
+          <Form.Field>
             <Form.Input
               type="number"
               step="any"
@@ -126,7 +130,7 @@ function App() {
               onChange={handleChange}
             />
           </Form.Field>
-          <Form.Field className="pb-4">
+          <Form.Field>
             <Form.Input
               type="number"
               step="any"
@@ -145,8 +149,14 @@ function App() {
           </Form.Field>
         </Form.Group>
 
-        <Label content="Options" ribbon color="brown" size="large" />
-        <Form.Field width="4" className="pt-4">
+        <Label
+          content="Options"
+          color="orange"
+          size="large"
+          className="w-full absolute left-0 right-0 z-10 text-center shadow-lg md:relative "
+        />
+
+        <Form.Field className="pt-12 md:pt-4">
           <Form.Input
             size="mini"
             type="number"
@@ -158,7 +168,7 @@ function App() {
             onChange={handleChange}
           />
         </Form.Field>
-        <Form.Group inline className="py-4">
+        <Form.Group inline>
           <Form.Field>
             <Label className="w-auto mx-auto" content="Epaisseur carton:" size="large" color="red" />
           </Form.Field>
@@ -182,7 +192,7 @@ function App() {
           </Form.Field>
         </Form.Group>
 
-        <Form.Field className="pb-8">
+        <Form.Field className="pb-4">
           <Checkbox
             id="center"
             name="center"
@@ -199,14 +209,14 @@ function App() {
           />
         </Form.Field>
 
-        <Form.Field>
-          <Button type="submit" size="small" color="vk" content="Valider" />
-        </Form.Field>
-        <div className="mt-20">
-          {state.width > 0 ? (
-            <Label content={format} attached="bottom" size="large" color="grey" className="text-center" />
-          ) : null}
-        </div>
+        <Form.Group inline>
+          <Form.Field>
+            <Button type="submit" size="small" color="vk" content="Valider" />
+          </Form.Field>
+          <Form.Field inline className="">
+            {state.width > 0 ? <Label content={format} size="large" color="brown" className="text-center " /> : null}
+          </Form.Field>
+        </Form.Group>
       </Form>
     </div>
   );
