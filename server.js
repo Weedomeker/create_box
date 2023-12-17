@@ -11,8 +11,8 @@ const PORT = process.env.PORT || 8000;
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use('/public', express.static('./public/temp'));
-app.use(express.static('./client/dist'));
+app.use('/public', express.static(path.join(__dirname, './public/temp')));
+app.use(express.static(path.join(__dirname, './client/dist')));
 
 let data = [];
 let fileName;
@@ -22,10 +22,16 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, './client/dist/'));
 });
 
-app.post('/', (req, res) => {
+app.post('/', async (req, res) => {
+  const files = fs.readdirSync(path.join(__dirname, './public/temp/'));
+  for (const file of files) {
+    await fs.unlink(path.join(__dirname, `./public/temp/${file}`), (err) => {
+      if (err) throw err;
+    });
+  }
   data = [];
   data.push(req.body);
-  createBox(
+  await createBox(
     parseFloat(data[0].width),
     parseFloat(data[0].long),
     parseFloat(data[0].height),
@@ -35,13 +41,14 @@ app.post('/', (req, res) => {
     parseFloat(data[0].arround),
     parseFloat(data[0].center),
   );
-  res.sendStatus(200);
+  if (fs.existsSync(path.join(__dirname, `./public/temp/${data[0].width}x${data[0].long}x${data[0].height}cm.svg`)))
+    res.sendStatus(200);
 });
 
 app.get('/download/dxf', async (req, res) => {
   let fileDownload = '';
 
-  const files = fs.readdirSync('./public/temp/');
+  const files = fs.readdirSync(path.join(__dirname, './public/temp/'));
   files.forEach((file) => {
     if (path.extname(file) == '.dxf') fileDownload = file;
     console.log('✔️ ', file);
@@ -52,19 +59,13 @@ app.get('/download/dxf', async (req, res) => {
       console.log('Download error: ', err);
       res.redirect('/');
     }
-
-    for (const file of files) {
-      fs.unlink(path.join(__dirname, `./public/temp/${file}`), (err) => {
-        if (err) throw err;
-      });
-    }
   });
 });
 
 app.get('/download/svg', async (req, res) => {
   let fileDownload = '';
 
-  const files = fs.readdirSync('./public/temp/');
+  const files = fs.readdirSync(path.join(__dirname, './public/temp/'));
   files.forEach((file) => {
     if (path.extname(file) == '.svg') fileDownload = file;
     console.log('✔️ ', file);
@@ -74,12 +75,6 @@ app.get('/download/svg', async (req, res) => {
     if (err) {
       console.log('Download error: ', err);
       res.redirect('/');
-    }
-
-    for (const file of files) {
-      fs.unlink(path.join(__dirname, `./public/temp/${file}`), (err) => {
-        if (err) throw err;
-      });
     }
   });
 });

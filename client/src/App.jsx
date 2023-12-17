@@ -62,14 +62,17 @@ function App() {
       body: JSON.stringify(state),
     })
       .then((res) => {
-        res.status == 200 ? console.log('Success: ', format) : console.log('error post data');
+        if (res.status == 200) {
+          console.log('Success: ', format);
+          //SHOW download
+          setShowDownload(true);
+          //SHOW render
+          setRender(`${state.width}x${state.long}x${state.height}cm.svg`);
+        } else {
+          console.log('error post data');
+        }
       })
       .catch((err) => console.log(err));
-
-    //SHOW download
-    setShowDownload(true);
-    //SHOW render
-    setRender(`${state.width}x${state.long}x${state.height}cm.svg`);
   };
 
   const handleChange = (e, { name, value }) => {
@@ -78,7 +81,7 @@ function App() {
   };
 
   return (
-    <div className="w-auto h-fit bg-zinc-800 ">
+    <div className="w-auto min-h-screen bg-zinc-800">
       <div className="pb-2 pt-4 md:pb-10 md:pt-20">
         <h1 className="text-zinc-300 font-extralight uppercase tracking-widest text-center">
           Create B
@@ -234,14 +237,11 @@ function App() {
       </Form>
 
       {render && (
-        <div className="h-fit p-4 bg-zinc-900 md:h-fit md:max-w-screen-2xl md:w-3/4 md:mx-auto">
+        <div className="p-4 bg-zinc-900 md:h-fit md:max-w-screen-2xl md:w-3/4 md:mx-auto">
           <h4 className="text-white text-lg uppercase font-extralight tracking-widest">
             Rendu:{<p className="pb-4  text-xs text-zinc-500 lowercase">{render}</p>}
           </h4>
-          <img
-            className="rotate-90 p-4 max-w-xs mx-auto md:p-2 md:max-h-full"
-            src={encodeURI(`${HOST}/public/${render}`)}
-          />
+          <img className="rotate-90 p-2 max-w-xs mx-auto md:max-h-full" src={encodeURI(`${HOST}/public/${render}`)} />
         </div>
       )}
     </div>
