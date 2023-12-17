@@ -2,6 +2,7 @@
   "name": "create_box",
   "version": "1.0.0",
   "description": "",
+  "homepage": "https://Weedomeker.github.io/create_box",
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d client/dist",
