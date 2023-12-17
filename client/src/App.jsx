@@ -64,15 +64,15 @@ function App() {
       .then((res) => {
         if (res.status == 200) {
           console.log('Success: ', format);
-          //SHOW download
-          setShowDownload(true);
-          //SHOW render
-          setRender(`${state.width}x${state.long}x${state.height}cm.svg`);
         } else {
           console.log('error post data');
         }
       })
       .catch((err) => console.log(err));
+    //SHOW download
+    setShowDownload(true);
+    //SHOW render
+    setRender(`${state.width}x${state.long}x${state.height}cm.svg`);
   };
 
   const handleChange = (e, { name, value }) => {

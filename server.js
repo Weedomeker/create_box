@@ -41,8 +41,11 @@ app.post('/', async (req, res) => {
     parseFloat(data[0].arround),
     parseFloat(data[0].center),
   );
-  if (fs.existsSync(path.join(__dirname, `./public/temp/${data[0].width}x${data[0].long}x${data[0].height}cm.svg`)))
+  if (fs.existsSync(path.join(__dirname, `./public/temp/${data[0].width}x${data[0].long}x${data[0].height}cm.svg`))) {
     res.sendStatus(200);
+  } else {
+    res.sendStatus(404);
+  }
 });
 
 app.get('/download/dxf', async (req, res) => {
