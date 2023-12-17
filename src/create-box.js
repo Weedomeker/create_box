@@ -88,16 +88,18 @@ async function createBox(width, long, height, tickness, smallsides, bottomside, 
     model.paths.fil4.layer = 'red';
   }
 
-  const svg = makerjs.exporter.toSVG(model);
+  const svg = makerjs.exporter.toSVG(model, { units: 'cm', layerOptions: { dec: { color: 2 } } });
   const dxf = makerjs.exporter.toDXF(model, { units: 'cm', layerOptions: { dec: { color: 2 } } });
 
   try {
     //${width}x${long}x${height}.dxf
     if (fs.existsSync(`./public/temp/`)) {
-      await fs.writeFileSync(`./public/temp/box_${width}x${long}x${height}cm.dxf`, dxf);
+      await fs.writeFileSync(`./public/temp/${width}x${long}x${height}cm.dxf`, dxf);
+      await fs.writeFileSync(`./public/temp/${width}x${long}x${height}cm.svg`, svg);
     } else {
       await fs.mkdirSync(`./public/temp/`, { recursive: true });
-      await fs.writeFileSync(`./public/temp/box_${width}x${long}x${height}cm.dxf`, dxf);
+      await fs.writeFileSync(`./public/temp/${width}x${long}x${height}cm.dxf`, dxf);
+      await fs.writeFileSync(`./public/temp/${width}x${long}x${height}cm.svg`, svg);
     }
   } catch (error) {
     console.log(error);

@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 8000;
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(express.static('./public'));
+app.use('/public', express.static('./public/temp'));
 app.use(express.static('./client/dist'));
 
 let data = [];
@@ -25,7 +25,6 @@ app.get('/', (req, res) => {
 app.post('/', (req, res) => {
   data = [];
   data.push(req.body);
-  console.log('Center= ', data[0].center);
   createBox(
     parseFloat(data[0].width),
     parseFloat(data[0].long),
@@ -39,13 +38,36 @@ app.post('/', (req, res) => {
   res.sendStatus(200);
 });
 
-app.get('/download', async (req, res) => {
+app.get('/download/dxf', async (req, res) => {
   let fileDownload = '';
 
   const files = fs.readdirSync('./public/temp/');
   files.forEach((file) => {
     if (path.extname(file) == '.dxf') fileDownload = file;
-    console.log('✔️', file);
+    console.log('✔️ ', file);
+  });
+
+  res.download('./public/temp/' + fileDownload, (err) => {
+    if (err) {
+      console.log('Download error: ', err);
+      res.redirect('/');
+    }
+
+    for (const file of files) {
+      fs.unlink(path.join(__dirname, `./public/temp/${file}`), (err) => {
+        if (err) throw err;
+      });
+    }
+  });
+});
+
+app.get('/download/svg', async (req, res) => {
+  let fileDownload = '';
+
+  const files = fs.readdirSync('./public/temp/');
+  files.forEach((file) => {
+    if (path.extname(file) == '.svg') fileDownload = file;
+    console.log('✔️ ', file);
   });
 
   res.download('./public/temp/' + fileDownload, (err) => {

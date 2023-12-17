@@ -1,10 +1,13 @@
 /* eslint-disable no-undef */
+import isDev from 'isdev';
 import './App.css';
 import { Form, Button, Icon, Label, Radio, Checkbox } from 'semantic-ui-react';
 import { useEffect, useState } from 'react';
-const HOST = import.meta.env.VITE_HOST;
+const HOST = isDev ? 'http://localhost:4000' : import.meta.env.VITE_HOST;
 
 function App() {
+  const [render, setRender] = useState(null);
+  const [showDownload, setShowDownload] = useState(false);
   const [checked, setChecked] = useState(false);
   const [format, setFormat] = useState(null);
   const [state, setState] = useState({
@@ -26,10 +29,33 @@ function App() {
     setFormat(maxWidth + ' x ' + maxLong + 'cm');
   }, [state, checked]);
 
+  const handleDownload = (e) => {
+    e.preventDefault();
+    const file = e.target.value;
+    fetch(`${HOST}/download/${file}`, {
+      method: 'GET',
+      mode: 'cors',
+      headers: {
+        'Content-Type': `application/${file}`,
+      },
+    })
+      .then((response) => response.blob())
+      .then((blob) => {
+        // Create blob link to download
+        const url = window.URL.createObjectURL(new Blob([blob]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `${state.width}x${state.long}x${state.height}cm.${file}`);
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+      });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch(`https://${HOST}`, {
+    fetch(HOST, {
       method: 'POST',
       mode: 'cors',
       headers: { 'Content-Type': 'application/json' },
@@ -40,51 +66,19 @@ function App() {
       })
       .catch((err) => console.log(err));
 
-    //RESET
-    setChecked(false);
-    setState({
-      width: 0,
-      long: 0,
-      height: 0,
-      tickness: 0.7,
-      smallsides: 10,
-      bottomside: 10,
-      arround: 0,
-      center: 2,
-    });
-
-    fetch(`https://${HOST}/download`, {
-      method: 'GET',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/dxf',
-      },
-    })
-      .then((response) => response.blob())
-      .then((blob) => {
-        // Create blob link to download
-        const url = window.URL.createObjectURL(new Blob([blob]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', `${state.width}x${state.long}x${state.height}cm.dxf`);
-
-        // Append to html link element page
-        document.body.appendChild(link);
-
-        // Start download
-        link.click();
-
-        // Clean up and remove the link
-        link.parentNode.removeChild(link);
-      });
+    //SHOW download
+    setShowDownload(true);
+    //SHOW render
+    setRender(`${state.width}x${state.long}x${state.height}cm.svg`);
   };
 
   const handleChange = (e, { name, value }) => {
     setState({ ...state, [name]: parseFloat(value) });
+    setShowDownload(false);
   };
 
   return (
-    <div className="w-auto h-screen bg-zinc-800 ">
+    <div className="w-auto h-fit bg-zinc-800 ">
       <div className="pb-2 pt-4 md:pb-10 md:pt-20">
         <h1 className="text-zinc-300 font-extralight uppercase tracking-widest text-center">
           Create B
@@ -94,7 +88,7 @@ function App() {
 
       <Form
         onSubmit={handleSubmit}
-        className="h-full rounded-md p-8 md:h-2/4 md:max-w-lg md:w-fit md:mx-auto  bg-gray-600 "
+        className="h-full md:rounded-md  p-8 md:h-2/4 md:max-w-lg md:w-3/4 md:mx-auto  bg-gray-600 "
       >
         <Form.Group widths="equal" className="flex flex-col pb-10 md:flex md:flex-col md:w-full md:pb-15">
           <Form.Field className="md:pb-4">
@@ -217,7 +211,39 @@ function App() {
             {state.width > 0 ? <Label content={format} size="large" color="brown" className="text-center " /> : null}
           </Form.Field>
         </Form.Group>
+
+        <Form.Group inline>
+          {showDownload && (
+            <Form.Field>
+              <Button
+                type="button"
+                size="mini"
+                color="google plus"
+                content="DXF"
+                value="dxf"
+                onClick={handleDownload}
+              />
+            </Form.Field>
+          )}
+          {showDownload && (
+            <Form.Field>
+              <Button type="button" size="mini" color="linkedin" content="SVG" value="svg" onClick={handleDownload} />
+            </Form.Field>
+          )}
+        </Form.Group>
       </Form>
+
+      {render && (
+        <div className="h-fit p-4 bg-zinc-900 md:h-fit md:max-w-screen-2xl md:w-3/4 md:mx-auto">
+          <h4 className="text-white text-lg uppercase font-extralight tracking-widest">
+            Rendu:{<p className="pb-4  text-xs text-zinc-500 lowercase">{render}</p>}
+          </h4>
+          <img
+            className="rotate-90 p-4 max-w-xs mx-auto md:p-2 md:max-h-full"
+            src={encodeURI(`${HOST}/public/${render}`)}
+          />
+        </div>
+      )}
     </div>
   );
 }
