@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "nodemon node server.js",
     "server": "node server.js",
-    "client": "cd client && pnpm run dev",
-    "build": "cd client && pnpm run build"
+    "client": "cd client && npm run dev",
+    "build": "cd client && npm run build"
   },
   "author": "Weedomeker",
   "license": "ISC",
