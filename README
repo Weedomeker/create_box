@@ -1,0 +1,5 @@
+This code allows you to create a custom box. You can define the dimensions of the box by specifying the length, width and height. You can also specify the thickness of the cardboard (3mm or 7mm) and whether you want to center the closure. Once you have entered all the information you can validate and the code will generate a DXF file which can be downloaded and used to create the box.
+
+
+Ce code permet de créer un boîte sur mesure. Vous pouvez définir les dimensions de la boîte en indiquant la longueur, la largeur et la hauteur. Vous pouvez également spécifier l'épaisseur du carton (3mm ou 7mm) et si vous souhaitez centrer la fermeture. Une fois que vous avez entré toutes les informations, vous pouvez valider et le code générera un fichier DXF qui peut être téléchargé et utilisé pour créer la boîte.
+
