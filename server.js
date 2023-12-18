@@ -18,7 +18,11 @@ let data = [];
 let fileName;
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, './client/dist'));
+  if (await fs.existsSync(path.join(__dirname, `./client/dist`))) {
+    res.sendFile(path.join(__dirname, './client/dist'));
+  } else {
+    res.sendStatus(200);
+  }
 });
 
 app.post('/', async (req, res) => {
