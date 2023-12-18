@@ -19,7 +19,7 @@ let fileName;
 
 app.get('/', (req, res) => {
   //console.log(isDev ? 'isDev' : 'isProd')
-  res.sendFile(path.join(__dirname, './client/dist/'));
+  res.sendStatus(200);
 });
 
 app.post('/', async (req, res) => {
