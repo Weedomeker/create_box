@@ -23,6 +23,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/', async (req, res) => {
+  console.log(path.join(__dirname, './public/temp/'));
   const files = fs.readdirSync(path.join(__dirname, './public/temp/'));
   for (const file of files) {
     await fs.unlink(path.join(__dirname, `./public/temp/${file}`), (err) => {
@@ -60,6 +61,7 @@ app.get('/download/dxf', async (req, res) => {
   res.download('./public/temp/' + fileDownload, (err) => {
     if (err) {
       console.log('Download error: ', err);
+      console.log(path.join(__dirname, './public/temp/'));
       res.redirect('/');
     }
   });
@@ -77,6 +79,8 @@ app.get('/download/svg', async (req, res) => {
   res.download('./public/temp/' + fileDownload, (err) => {
     if (err) {
       console.log('Download error: ', err);
+      console.log(path.join(__dirname, './public/temp/'));
+
       res.redirect('/');
     }
   });
