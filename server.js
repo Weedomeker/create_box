@@ -17,7 +17,7 @@ app.use(express.static(path.join(__dirname, './client/dist')));
 let data = [];
 let fileName;
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
   if (await fs.existsSync(path.join(__dirname, `./client/dist`))) {
     res.sendFile(path.join(__dirname, './client/dist'));
   } else {
