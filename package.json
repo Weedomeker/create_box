@@ -4,12 +4,12 @@
   "description": "",
   "homepage": "https://Weedomeker.github.io/create_box",
   "scripts": {
-    "predeploy": "npm run build",
+    "predeploy": "pnpm run build",
     "deploy": "gh-pages -d client/dist",
     "dev": "nodemon node server.js",
     "server": "node server.js",
     "client": "cd client && npm run dev",
-    "build": "cd client && npm run build"
+    "build": "cd client && pnpm run build"
   },
   "author": "Weedomeker",
   "license": "ISC",

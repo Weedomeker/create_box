@@ -34,7 +34,7 @@ function App() {
     const file = e.target.value;
     fetch(`${HOST}/download/${file}`, {
       method: 'GET',
-      mode: 'cors',
+      mode: 'no-cors',
       headers: {
         'Content-Type': `application/${file}`,
       },
@@ -57,7 +57,7 @@ function App() {
 
     fetch(HOST, {
       method: 'POST',
-      mode: 'cors',
+      mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(state),
     })
