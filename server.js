@@ -18,13 +18,12 @@ let data = [];
 let fileName;
 
 app.get('/', (req, res) => {
-  //console.log(isDev ? 'isDev' : 'isProd')
-  res.sendStatus(200);
+  res.sendFile(path.join(__dirname, './client/dist'));
 });
 
 app.post('/', async (req, res) => {
-  if (fs.existsSync(path.join(__dirname, `./public/temp/`))) {
-    const files = fs.readdirSync(path.join(__dirname, './public/temp/'));
+  if (await fs.existsSync(path.join(__dirname, `./public/temp/`))) {
+    const files = await fs.readdirSync(path.join(__dirname, './public/temp/'));
     for (const file of files) {
       await fs.unlink(path.join(__dirname, `./public/temp/${file}`), (err) => {
         if (err) throw err;

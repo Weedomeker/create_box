@@ -34,7 +34,7 @@ function App() {
     const file = e.target.value;
     fetch(`${HOST}/download/${file}`, {
       method: 'GET',
-      mode: 'no-cors',
+      // mode: 'no-cors',
       headers: {
         'Content-Type': `application/${file}`,
       },
@@ -57,7 +57,7 @@ function App() {
 
     fetch(HOST, {
       method: 'POST',
-      mode: 'no-cors',
+      // mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(state),
     })
@@ -72,7 +72,7 @@ function App() {
     //SHOW download
     setShowDownload(true);
     //SHOW render
-    setRender(`${state.width}x${state.long}x${state.height}cm.svg`);
+    setRender(`${parseFloat(state.width)}x${parseFloat(state.long)}x${parseFloat(state.height)}cm.svg`);
   };
 
   const handleChange = (e, { name, value }) => {
