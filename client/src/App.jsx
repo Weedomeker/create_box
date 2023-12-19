@@ -25,7 +25,7 @@ function App() {
     fetch(`https://${URL}`)
       .then((res) => {
         if (res.ok) {
-          console.log(res.headers);
+          console.log('Le serveur est en ligne: ', res.status);
         } else {
           console.error('Le serveur a renvoyé une erreur: ', res.status);
         }
