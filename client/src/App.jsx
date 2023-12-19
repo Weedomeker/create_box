@@ -44,7 +44,10 @@ function App() {
         const url = window.URL.createObjectURL(new Blob([blob]));
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', `${state.width}x${state.long}x${state.height}cm.${file}`);
+        link.setAttribute(
+          'download',
+          `${state.width}x${state.long}x${state.height}${state.center == 1.5 ? '_center ' : ''}cm.${file}`,
+        );
         document.body.appendChild(link);
         link.click();
         link.parentNode.removeChild(link);
@@ -60,7 +63,7 @@ function App() {
       body: JSON.stringify(state),
     })
       .then((res) => {
-        if (res.status == 200) {
+        if (res.status === 200) {
           console.log('Success: ', format);
           //SHOW download
           setShowDownload(true);
@@ -76,7 +79,6 @@ function App() {
       })
       .catch((err) => console.log(err));
   };
-
   const handleChange = (e, { name, value }) => {
     setState({ ...state, [name]: parseFloat(value) });
     setShowDownload(false);
@@ -244,6 +246,7 @@ function App() {
             Rendu:{<p className="pb-4  text-xs text-zinc-500 lowercase">{render}</p>}
           </h4>
           <img
+            alt={render}
             className="rotate-90 p-2 max-w-xs mx-auto md:max-h-full"
             src={encodeURI(`https://${URL}/public/${render}`)}
           />

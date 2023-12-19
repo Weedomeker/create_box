@@ -95,20 +95,11 @@ async function createBox(width, long, height, tickness, smallsides, bottomside, 
     //${width}x${long}x${height}.dxf
     if (fs.existsSync(`./public/temp/`)) {
       await fs.writeFileSync(`./public/temp/${width}x${long}x${height}${center == 1.5 ? '_center ' : ''}cm.dxf`, dxf);
-      await fs.writeFileSync(
-        `./public/temp/${width}x${long}x${height}${data[0].center == 1.5 ? '_center ' : ''}cm.svg`,
-        svg,
-      );
+      await fs.writeFileSync(`./public/temp/${width}x${long}x${height}${center == 1.5 ? '_center ' : ''}cm.svg`, svg);
     } else {
       await fs.mkdirSync(`./public/temp/`, { recursive: true });
-      await fs.writeFileSync(
-        `./public/temp/${width}x${long}x${height}${data[0].center == 1.5 ? '_center ' : ''}cm.dxf`,
-        dxf,
-      );
-      await fs.writeFileSync(
-        `./public/temp/${width}x${long}x${height}${data[0].center == 1.5 ? '_center ' : ''}cm.svg`,
-        svg,
-      );
+      await fs.writeFileSync(`./public/temp/${width}x${long}x${height}${center == 1.5 ? '_center ' : ''}cm.dxf`, dxf);
+      await fs.writeFileSync(`./public/temp/${width}x${long}x${height}${center == 1.5 ? '_center ' : ''}cm.svg`, svg);
     }
   } catch (error) {
     console.log(error);
