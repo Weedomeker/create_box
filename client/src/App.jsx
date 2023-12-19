@@ -3,7 +3,7 @@ import isDev from 'isdev';
 import './App.css';
 import { Form, Button, Icon, Label, Radio, Checkbox } from 'semantic-ui-react';
 import { useEffect, useState } from 'react';
-const HOST = isDev ? 'http://localhost:4000' : import.meta.env.VITE_HOST;
+const URL = isDev ? 'localhost:4000' : import.meta.env.VITE_HOST;
 
 function App() {
   const [render, setRender] = useState(null);
@@ -32,7 +32,7 @@ function App() {
   const handleDownload = (e) => {
     e.preventDefault();
     const file = e.target.value;
-    fetch(`${HOST}/download/${file}`, {
+    fetch(`https://${URL}/download/${file}`, {
       method: 'GET',
       // mode: 'no-cors',
       headers: {
@@ -55,7 +55,7 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch(HOST, {
+    fetch(`https://${URL}`, {
       method: 'POST',
       // mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
@@ -64,15 +64,15 @@ function App() {
       .then((res) => {
         if (res.status == 200) {
           console.log('Success: ', format);
+          //SHOW download
+          setShowDownload(true);
+          //SHOW render
+          setRender(`${parseFloat(state.width)}x${parseFloat(state.long)}x${parseFloat(state.height)}cm.svg`);
         } else {
           console.log('error post data');
         }
       })
       .catch((err) => console.log(err));
-    //SHOW download
-    setShowDownload(true);
-    //SHOW render
-    setRender(`${parseFloat(state.width)}x${parseFloat(state.long)}x${parseFloat(state.height)}cm.svg`);
   };
 
   const handleChange = (e, { name, value }) => {
@@ -241,7 +241,10 @@ function App() {
           <h4 className="text-white text-lg uppercase font-extralight tracking-widest">
             Rendu:{<p className="pb-4  text-xs text-zinc-500 lowercase">{render}</p>}
           </h4>
-          <img className="rotate-90 p-2 max-w-xs mx-auto md:max-h-full" src={encodeURI(`${HOST}/public/${render}`)} />
+          <img
+            className="rotate-90 p-2 max-w-xs mx-auto md:max-h-full"
+            src={encodeURI(`https://${URL}/public/${render}`)}
+          />
         </div>
       )}
     </div>
