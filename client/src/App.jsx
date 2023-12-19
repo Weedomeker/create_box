@@ -46,7 +46,7 @@ function App() {
         link.href = url;
         link.setAttribute(
           'download',
-          `${state.width}x${state.long}x${state.height}cm${state.center == 1.5 ? '_center ' : ''}.${file}`,
+          `${state.width}x${state.long}x${state.height}cm${state.center == 1.5 ? '_center' : ''}.${file}`,
         );
         document.body.appendChild(link);
         link.click();
@@ -70,7 +70,7 @@ function App() {
           //SHOW render
           setRender(
             `${parseFloat(state.width)}x${parseFloat(state.long)}x${parseFloat(state.height)}cm${
-              state.center == 1.5 ? '_center ' : ''
+              state.center == 1.5 ? '_center' : ''
             }.svg`,
           );
         } else {

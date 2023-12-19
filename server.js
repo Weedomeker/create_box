@@ -51,7 +51,7 @@ app.post('/', async (req, res) => {
       path.join(
         __dirname,
         `./public/temp/${data[0].width}x${data[0].long}x${data[0].height}cm${
-          data[0].center == 1.5 ? '_center ' : ''
+          data[0].center == 1.5 ? '_center' : ''
         }.svg`,
       ),
     )
