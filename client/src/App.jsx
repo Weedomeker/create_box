@@ -22,6 +22,20 @@ function App() {
   });
 
   useEffect(() => {
+    fetch(`https://${URL}`)
+      .then((res) => {
+        if (res.ok) {
+          console.log(res.headers);
+        } else {
+          console.error('Le serveur a renvoyé une erreur: ', res.status);
+        }
+      })
+      .catch((err) => {
+        console.error('Erreur lors de la tentative de connexion au serveur: ', err);
+      });
+  }, []);
+
+  useEffect(() => {
     const maxWidth = checked
       ? state.width + state.bottomside * 2 + state.height * 2 + state.tickness * 2
       : state.width * 2 + state.bottomside + state.height * 2 + state.tickness * 2;
