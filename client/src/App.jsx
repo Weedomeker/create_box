@@ -46,7 +46,7 @@ function App() {
         link.href = url;
         link.setAttribute(
           'download',
-          `${state.width}x${state.long}x${state.height}${state.center == 1.5 ? '_center ' : ''}cm.${file}`,
+          `${state.width}x${state.long}x${state.height}cm${state.center == 1.5 ? '_center ' : ''}.${file}`,
         );
         document.body.appendChild(link);
         link.click();
@@ -69,9 +69,9 @@ function App() {
           setShowDownload(true);
           //SHOW render
           setRender(
-            `${parseFloat(state.width)}x${parseFloat(state.long)}x${parseFloat(state.height)}${
+            `${parseFloat(state.width)}x${parseFloat(state.long)}x${parseFloat(state.height)}cm${
               state.center == 1.5 ? '_center ' : ''
-            }cm.svg`,
+            }.svg`,
           );
         } else {
           console.log('error post data');
