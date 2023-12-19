@@ -34,7 +34,6 @@ function App() {
     const file = e.target.value;
     fetch(`https://${URL}/download/${file}`, {
       method: 'GET',
-      // mode: 'no-cors',
       headers: {
         'Content-Type': `application/${file}`,
       },
@@ -57,7 +56,6 @@ function App() {
 
     fetch(`https://${URL}`, {
       method: 'POST',
-      // mode: 'no-cors',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(state),
     })
@@ -67,7 +65,11 @@ function App() {
           //SHOW download
           setShowDownload(true);
           //SHOW render
-          setRender(`${parseFloat(state.width)}x${parseFloat(state.long)}x${parseFloat(state.height)}cm.svg`);
+          setRender(
+            `${parseFloat(state.width)}x${parseFloat(state.long)}x${parseFloat(state.height)}${
+              state.center == 1.5 ? '_center ' : ''
+            }cm.svg`,
+          );
         } else {
           console.log('error post data');
         }

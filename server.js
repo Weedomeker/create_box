@@ -47,7 +47,14 @@ app.post('/', async (req, res) => {
     parseFloat(data[0].center),
   );
   if (
-    await fs.existsSync(path.join(__dirname, `./public/temp/${data[0].width}x${data[0].long}x${data[0].height}cm.svg`))
+    await fs.existsSync(
+      path.join(
+        __dirname,
+        `./public/temp/${data[0].width}x${data[0].long}x${data[0].height}${
+          data[0].center == 1.5 ? '_center ' : ''
+        }cm.svg`,
+      ),
+    )
   ) {
     res.sendStatus(200);
   } else {
