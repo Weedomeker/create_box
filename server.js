@@ -62,7 +62,7 @@ app.post('/', async (req, res) => {
   }
 });
 
-app.get('/download/dxf', async (req, res) => {
+app.get('/download/dxf', (req, res) => {
   let fileDownload = '';
 
   const files = fs.readdirSync(path.join(__dirname, './public/temp/'));
@@ -71,19 +71,15 @@ app.get('/download/dxf', async (req, res) => {
     console.log('✔️ ', file);
   });
 
-  try {
-    res.download('./public/temp/' + fileDownload, (err) => {
-      if (err) {
-        console.log('Download error: ', err);
-        res.redirect('/');
-      }
-    });
-  } catch (error) {
-    res.status(404).send('Error download ressource' + error);
-  }
+  res.download('./public/temp/' + fileDownload, (err) => {
+    if (err) {
+      console.log('Download error: ', err);
+      res.redirect('/');
+    }
+  });
 });
 
-app.get('/download/svg', async (req, res) => {
+app.get('/download/svg', (req, res) => {
   let fileDownload = '';
 
   const files = fs.readdirSync(path.join(__dirname, './public/temp/'));
@@ -92,17 +88,13 @@ app.get('/download/svg', async (req, res) => {
     console.log('✔️ ', file);
   });
 
-  try {
-    res.download('./public/temp/' + fileDownload, (err) => {
-      if (err) {
-        console.log('Download error: ', err);
+  res.download('./public/temp/' + fileDownload, (err) => {
+    if (err) {
+      console.log('Download error: ', err);
 
-        res.redirect('/');
-      }
-    });
-  } catch (error) {
-    res.status(404).send('Error download ressource' + error);
-  }
+      res.redirect('/');
+    }
+  });
 });
 
 app.get('/api', (req, res) => {
