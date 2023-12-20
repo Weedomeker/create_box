@@ -62,7 +62,7 @@ app.post('/', async (req, res) => {
   }
 });
 
-app.get('/create_box/download/dxf', async (req, res) => {
+app.get('/download/dxf', async (req, res) => {
   let fileDownload = '';
 
   const files = fs.readdirSync(path.join(__dirname, './public/temp/'));
@@ -79,7 +79,7 @@ app.get('/create_box/download/dxf', async (req, res) => {
   });
 });
 
-app.get('/create_box/download/svg', async (req, res) => {
+app.get('/download/svg', async (req, res) => {
   let fileDownload = '';
 
   const files = fs.readdirSync(path.join(__dirname, './public/temp/'));
