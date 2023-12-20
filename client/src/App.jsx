@@ -22,7 +22,7 @@ function App() {
   });
 
   useEffect(() => {
-    fetch(`https://${URL}`)
+    fetch(`http://${URL}`)
       .then((res) => {
         if (res.ok) {
           console.log('Le serveur est en ligne: ', res.status);
@@ -46,7 +46,7 @@ function App() {
   const handleDownload = (e) => {
     e.preventDefault();
     const file = e.target.value;
-    fetch(`https://${URL}/download/${file}`, {
+    fetch(`http://${URL}/download/${file}`, {
       method: 'GET',
       headers: {
         'Content-Type': `application/${file}`,
@@ -71,7 +71,7 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch(`https://${URL}`, {
+    fetch(`http://${URL}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(state),
@@ -263,7 +263,7 @@ function App() {
           <object
             width="auto"
             className="p-2 max-w-xs mx-auto md:max-h-full"
-            data={encodeURI(`https://${URL}/public/${render}`)}
+            data={encodeURI(`http://${URL}/public/${render}`)}
             type="image/svg+xml"
           ></object>
         </div>
