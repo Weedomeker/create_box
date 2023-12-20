@@ -240,7 +240,7 @@ function App() {
                 type="button"
                 size="mini"
                 color="google plus"
-                content="DXF"
+                content="Download"
                 value="dxf"
                 onClick={handleDownload}
               />
@@ -259,11 +259,13 @@ function App() {
           <h4 className="text-white text-lg uppercase font-extralight tracking-widest">
             Rendu:{<p className="pb-4  text-xs text-zinc-500 lowercase">{render}</p>}
           </h4>
-          <img
-            alt={render}
-            className="rotate-90 p-2 max-w-xs mx-auto md:max-h-full"
-            src={encodeURI(`https://${URL}/public/${render}`)}
-          />
+
+          <object
+            width="auto"
+            className="p-2 max-w-xs mx-auto md:max-h-full"
+            data={encodeURI(`https://${URL}/public/${render}`)}
+            type="image/svg+xml"
+          ></object>
         </div>
       )}
     </div>
