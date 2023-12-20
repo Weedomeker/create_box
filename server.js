@@ -71,12 +71,16 @@ app.get('/download/dxf', async (req, res) => {
     console.log('✔️ ', file);
   });
 
-  res.download('./public/temp/' + fileDownload, (err) => {
-    if (err) {
-      console.log('Download error: ', err);
-      res.redirect('/');
-    }
-  });
+  try {
+    res.download('./public/temp/' + fileDownload, (err) => {
+      if (err) {
+        console.log('Download error: ', err);
+        res.redirect('/');
+      }
+    });
+  } catch (error) {
+    res.status(404).send(error);
+  }
 });
 
 app.get('/download/svg', async (req, res) => {
@@ -88,13 +92,17 @@ app.get('/download/svg', async (req, res) => {
     console.log('✔️ ', file);
   });
 
-  res.download('./public/temp/' + fileDownload, (err) => {
-    if (err) {
-      console.log('Download error: ', err);
+  try {
+    res.download('./public/temp/' + fileDownload, (err) => {
+      if (err) {
+        console.log('Download error: ', err);
 
-      res.redirect('/');
-    }
-  });
+        res.redirect('/');
+      }
+    });
+  } catch (error) {
+    res.status(404).send(error);
+  }
 });
 
 app.get('/api', (req, res) => {
