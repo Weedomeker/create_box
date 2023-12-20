@@ -79,7 +79,7 @@ app.get('/download/dxf', async (req, res) => {
       }
     });
   } catch (error) {
-    res.status(404).send(error);
+    res.status(404).send('Error download ressource' + error);
   }
 });
 
@@ -101,7 +101,7 @@ app.get('/download/svg', async (req, res) => {
       }
     });
   } catch (error) {
-    res.status(404).send(error);
+    res.status(404).send('Error download ressource' + error);
   }
 });
 
