@@ -3,7 +3,7 @@ import isDev from 'isdev';
 import './App.css';
 import { Form, Button, Icon, Label, Radio, Checkbox } from 'semantic-ui-react';
 import { useEffect, useState } from 'react';
-const URL = isDev ? 'localhost:4000' : import.meta.env.VITE_HOST;
+const URL = isDev ? 'http://localhost:4000' : import.meta.env.VITE_HOST;
 
 function App() {
   const [render, setRender] = useState(null);
@@ -22,7 +22,7 @@ function App() {
   });
 
   useEffect(() => {
-    fetch(`https://${URL}`)
+    fetch(URL)
       .then((res) => {
         if (res.ok) {
           console.log('Le serveur est en ligne: ', res.status);
@@ -46,7 +46,7 @@ function App() {
   const handleDownload = (e) => {
     e.preventDefault();
     const file = e.target.value;
-    fetch(`https://${URL}/download/${file}`, {
+    fetch(`${URL}/download/${file}`, {
       method: 'GET',
       headers: {
         'Content-Type': `application/${file}`,
@@ -71,7 +71,7 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch(`https://${URL}`, {
+    fetch(URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(state),
@@ -231,24 +231,16 @@ function App() {
           <Form.Field inline className="">
             {state.width > 0 ? <Label content={format} size="large" color="brown" className="text-center " /> : null}
           </Form.Field>
-        </Form.Group>
-
-        <Form.Group inline>
           {showDownload && (
             <Form.Field>
               <Button
                 type="button"
-                size="mini"
+                size="small"
                 color="google plus"
-                content="DXF"
+                content="Telecharger"
                 value="dxf"
                 onClick={handleDownload}
               />
-            </Form.Field>
-          )}
-          {showDownload && (
-            <Form.Field>
-              <Button type="button" size="mini" color="linkedin" content="SVG" value="svg" onClick={handleDownload} />
             </Form.Field>
           )}
         </Form.Group>
@@ -257,13 +249,15 @@ function App() {
       {render && (
         <div className="p-4 bg-zinc-900 md:h-fit md:max-w-screen-2xl md:w-3/4 md:mx-auto">
           <h4 className="text-white text-lg uppercase font-extralight tracking-widest">
-            Rendu:{<p className="pb-4  text-xs text-zinc-500 lowercase">{render}</p>}
+            Rendu:{<p className="text-xs text-zinc-500 lowercase tracking-normal">{render}</p>}
           </h4>
-          <img
-            alt={render}
-            className="rotate-90 p-2 max-w-xs mx-auto md:max-h-full"
-            src={encodeURI(`https://${URL}/public/${render}`)}
-          />
+
+          <object
+            width="800px"
+            data={encodeURI(`${URL}/public/${render}`)}
+            type="image/svg+xml"
+            className=" max-w-xs mx-auto md:max-w-xl md:max-h-full"
+          ></object>
         </div>
       )}
     </div>

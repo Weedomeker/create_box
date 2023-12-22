@@ -1,11 +1,15 @@
-const makerjs = require('makerjs');
-const fs = require('fs');
+function createBox(width, long, height, tickness, smallsides, bottomside, arround, center) {
+  const makerjs = require('makerjs');
 
-const mmToPoint = (n1) => {
-  return n1 * 2.8346438836889;
-};
+  width = 30;
+  long = 50;
+  height = 10;
+  tickness = 0.7;
+  smallsides = 10;
+  bottomside = 10;
+  arround = 0;
+  center = 1.5;
 
-async function createBox(width, long, height, tickness, smallsides, bottomside, arround, center) {
   const model = {
     models: {
       rec: new makerjs.models.Rectangle(long, width),
@@ -19,8 +23,8 @@ async function createBox(width, long, height, tickness, smallsides, bottomside, 
       left: new makerjs.paths.Line([-height, +tickness], [-height, width - tickness]),
       right: new makerjs.paths.Line([long + height, tickness], [long + height, width - tickness]),
       //Gauche
-      rainant_left_h1: new makerjs.paths.Line([0, tickness], [-height, tickness]),
-      rainant_left_h2: new makerjs.paths.Line([0, width - tickness], [-height, width - tickness]),
+      // rainant_left_h1: new makerjs.paths.Line([0, tickness], [-height, tickness]),
+      // rainant_left_h2: new makerjs.paths.Line([0, width - tickness], [-height, width - tickness]),
       //Droite
       rainant_right_h1: new makerjs.paths.Line([long, width - tickness], [long + height, width - tickness]),
       rainant_right_h2: new makerjs.paths.Line([long, tickness], [long + height, tickness]),
@@ -102,8 +106,8 @@ async function createBox(width, long, height, tickness, smallsides, bottomside, 
   model.paths.bottom.layer = 'orange';
   model.paths.left.layer = 'orange';
   model.paths.right.layer = 'orange';
-  model.paths.rainant_left_h1.layer = 'orange';
-  model.paths.rainant_left_h2.layer = 'orange';
+  // model.paths.rainant_left_h1.layer = 'orange';
+  // model.paths.rainant_left_h2.layer = 'orange';
   model.paths.rainant_right_h1.layer = 'orange';
   model.paths.rainant_right_h2.layer = 'orange';
 
@@ -155,22 +159,9 @@ async function createBox(width, long, height, tickness, smallsides, bottomside, 
     model.paths.fil4.layer = 'red';
   }
 
-  const svg = makerjs.exporter.toSVG(model, { units: 'cm', layerOptions: { dec: { color: 2 } } });
+  const svg = makerjs.exporter.toSVG(model, { units: 'mm', layerOptions: { dec: { color: 2 } } });
   const dxf = makerjs.exporter.toDXF(model, { units: 'cm', layerOptions: { dec: { color: 2 } } });
 
-  try {
-    //${width}x${long}x${height}.dxf
-    if (fs.existsSync(`./public/temp/`)) {
-      await fs.writeFileSync(`./public/temp/${width}x${long}x${height}cm${center == 1.5 ? '_center' : ''}.dxf`, dxf);
-      await fs.writeFileSync(`./public/temp/${width}x${long}x${height}cm${center == 1.5 ? '_center' : ''}.svg`, svg);
-    } else {
-      await fs.mkdirSync(`./public/temp/`, { recursive: true });
-      await fs.writeFileSync(`./public/temp/${width}x${long}x${height}cm${center == 1.5 ? '_center' : ''}.dxf`, dxf);
-      await fs.writeFileSync(`./public/temp/${width}x${long}x${height}cm${center == 1.5 ? '_center' : ''}.svg`, svg);
-    }
-  } catch (error) {
-    console.log(error);
-  }
+  document.write(svg);
 }
-
-module.exports = createBox;
+createBox();

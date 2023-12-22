@@ -8,7 +8,7 @@
     "deploy": "gh-pages -d client/dist",
     "dev": "nodemon node server.js",
     "server": "node server.js",
-    "client": "cd client && npm run dev",
+    "client": "cd client && pnpm run dev",
     "build": "cd client && pnpm run build"
   },
   "author": "Weedomeker",
