@@ -237,7 +237,11 @@ function App() {
                 type="button"
                 size="small"
                 color="google plus"
+<<<<<<< HEAD
                 content="Telecharger"
+=======
+                content="Download"
+>>>>>>> 257730c9cfe0bd6a596911899353827e573dda55
                 value="dxf"
                 onClick={handleDownload}
               />
@@ -253,10 +257,17 @@ function App() {
           </h4>
 
           <object
+<<<<<<< HEAD
             width="800px"
             data={encodeURI(`${URL}/public/${render}`)}
             type="image/svg+xml"
             className=" max-w-xs mx-auto md:max-w-xl md:max-h-full"
+=======
+            width="auto"
+            className="p-2 max-w-xs mx-auto md:max-h-full"
+            data={encodeURI(`https://${URL}/public/${render}`)}
+            type="image/svg+xml"
+>>>>>>> 257730c9cfe0bd6a596911899353827e573dda55
           ></object>
         </div>
       )}
