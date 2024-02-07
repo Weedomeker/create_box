@@ -9,6 +9,7 @@ function createBox(width, long, height, tickness, smallsides, bottomside, arroun
   bottomside = 10;
   arround = 0;
   center = 1.5;
+  oreille = false;
 
   const model = {
     models: {
@@ -23,8 +24,8 @@ function createBox(width, long, height, tickness, smallsides, bottomside, arroun
       left: new makerjs.paths.Line([-height, +tickness], [-height, width - tickness]),
       right: new makerjs.paths.Line([long + height, tickness], [long + height, width - tickness]),
       //Gauche
-      // rainant_left_h1: new makerjs.paths.Line([0, tickness], [-height, tickness]),
-      // rainant_left_h2: new makerjs.paths.Line([0, width - tickness], [-height, width - tickness]),
+      rainant_left_h1: new makerjs.paths.Line([0, tickness], [-height, tickness]),
+      rainant_left_h2: new makerjs.paths.Line([0, width - tickness], [-height, width - tickness]),
       //Droite
       rainant_right_h1: new makerjs.paths.Line([long, width - tickness], [long + height, width - tickness]),
       rainant_right_h2: new makerjs.paths.Line([long, tickness], [long + height, tickness]),
@@ -45,23 +46,25 @@ function createBox(width, long, height, tickness, smallsides, bottomside, arroun
       left_h1: new makerjs.paths.Line([-smallsides, tickness], [-smallsides - height, tickness]),
       left_h2: new makerjs.paths.Line([-smallsides, width - tickness], [-smallsides - height, width - tickness]),
       left_v1: new makerjs.paths.Line([-smallsides - height, width - tickness], [-smallsides - height, tickness]),
+
       //Oreille Bas Gauche
-      oreille_left_bottom_v1: new makerjs.paths.Line([-height / 8, -smallsides / 2], [0, tickness]),
-      oreille_left_bottom_v2: new makerjs.paths.Line([-height + height / 8, -smallsides / 2], [-height, tickness]),
-      oreille_left_bottom: new makerjs.paths.Line(
-        [-height / 8, -smallsides / 2],
-        [-height + height / 8, -smallsides / 2],
-      ),
+      oreille_left_bottom_v1: oreille ? new makerjs.paths.Line([-height / 8, -smallsides / 2], [0, tickness]) : null,
+      oreille_left_bottom_v2: oreille
+        ? new makerjs.paths.Line([-height + height / 8, -smallsides / 2], [-height, tickness])
+        : null,
+      oreille_left_bottom: oreille
+        ? new makerjs.paths.Line([-height / 8, -smallsides / 2], [-height + height / 8, -smallsides / 2])
+        : null,
       //Oreille Haut Gauche
-      oreille_left_top_v1: new makerjs.paths.Line([0, width - tickness], [-height / 8, width + smallsides / 2]),
-      oreille_left_top_v2: new makerjs.paths.Line(
-        [-height + height / 8, width + smallsides / 2],
-        [-height, width - tickness],
-      ),
-      oreille_left_top: new makerjs.paths.Line(
-        [-height + height / 8, width + smallsides / 2],
-        [-height / 8, width + smallsides / 2],
-      ),
+      oreille_left_top_v1: oreille
+        ? new makerjs.paths.Line([0, width - tickness], [-height / 8, width + smallsides / 2])
+        : null,
+      oreille_left_top_v2: oreille
+        ? new makerjs.paths.Line([-height + height / 8, width + smallsides / 2], [-height, width - tickness])
+        : null,
+      oreille_left_top: oreille
+        ? new makerjs.paths.Line([-height + height / 8, width + smallsides / 2], [-height / 8, width + smallsides / 2])
+        : null,
       //Droite
       right_h1: new makerjs.paths.Line([long + height, tickness], [long + height + smallsides, tickness]),
       right_h2: new makerjs.paths.Line(
@@ -73,28 +76,31 @@ function createBox(width, long, height, tickness, smallsides, bottomside, arroun
         [long + smallsides + height, tickness],
       ),
       //Oreille Bas Droite
-      oreille_right_bottom_v1: new makerjs.paths.Line([long, tickness], [long + height / 8, -smallsides / 2]),
-      oreille_right_bottom_v2: new makerjs.paths.Line(
-        [long + height, tickness],
-        [long + height - height / 8, -smallsides / 2],
-      ),
-      oreille_right_bottom: new makerjs.paths.Line(
-        [long + height / 8, -smallsides / 2],
-        [long + height - height / 8, -smallsides / 2],
-      ),
+      oreille_right_bottom_v1: oreille
+        ? new makerjs.paths.Line([long, tickness], [long + height / 8, -smallsides / 2])
+        : null,
+      oreille_right_bottom_v2: oreille
+        ? new makerjs.paths.Line([long + height, tickness], [long + height - height / 8, -smallsides / 2])
+        : null,
+      oreille_right_bottom: oreille
+        ? new makerjs.paths.Line([long + height / 8, -smallsides / 2], [long + height - height / 8, -smallsides / 2])
+        : null,
       //Oreille Haut Droite
-      oreille_right_top_v1: new makerjs.paths.Line(
-        [long, width - tickness],
-        [long + height / 8, width + smallsides / 2],
-      ),
-      oreille_right_top_v2: new makerjs.paths.Line(
-        [long + height, width - tickness],
-        [long + -height / 8 + height, width + smallsides / 2],
-      ),
-      oreille_right_top: new makerjs.paths.Line(
-        [long + height / 8, width + smallsides / 2],
-        [long + -height / 8 + height, width + smallsides / 2],
-      ),
+      oreille_right_top_v1: oreille
+        ? new makerjs.paths.Line([long, width - tickness], [long + height / 8, width + smallsides / 2])
+        : null,
+      oreille_right_top_v2: oreille
+        ? new makerjs.paths.Line(
+            [long + height, width - tickness],
+            [long + -height / 8 + height, width + smallsides / 2],
+          )
+        : null,
+      oreille_right_top: oreille
+        ? new makerjs.paths.Line(
+            [long + height / 8, width + smallsides / 2],
+            [long + -height / 8 + height, width + smallsides / 2],
+          )
+        : null,
     },
   };
   model.layer = 'dec';
@@ -106,10 +112,17 @@ function createBox(width, long, height, tickness, smallsides, bottomside, arroun
   model.paths.bottom.layer = 'orange';
   model.paths.left.layer = 'orange';
   model.paths.right.layer = 'orange';
-  // model.paths.rainant_left_h1.layer = 'orange';
-  // model.paths.rainant_left_h2.layer = 'orange';
-  model.paths.rainant_right_h1.layer = 'orange';
-  model.paths.rainant_right_h2.layer = 'orange';
+  if (oreille == true) {
+    model.paths.rainant_left_h1.layer = 'orange';
+    model.paths.rainant_left_h2.layer = 'orange';
+    model.paths.rainant_right_h1.layer = 'orange';
+    model.paths.rainant_right_h2.layer = 'orange';
+  } else {
+    model.paths.rainant_left_h1.layer = 'red';
+    model.paths.rainant_left_h2.layer = 'red';
+    model.paths.rainant_right_h1.layer = 'red';
+    model.paths.rainant_right_h2.layer = 'red';
+  }
 
   //decoupe
   //haut
@@ -129,18 +142,20 @@ function createBox(width, long, height, tickness, smallsides, bottomside, arroun
   model.paths.right_h2.layer = 'red';
   model.paths.right_v1.layer = 'red';
   //Oreille
-  model.paths.oreille_left_bottom.layer = 'red';
-  model.paths.oreille_left_bottom_v1.layer = 'red';
-  model.paths.oreille_left_bottom_v2.layer = 'red';
-  model.paths.oreille_left_top.layer = 'red';
-  model.paths.oreille_left_top_v1.layer = 'red';
-  model.paths.oreille_left_top_v2.layer = 'red';
-  model.paths.oreille_right_bottom.layer = 'red';
-  model.paths.oreille_right_bottom_v1.layer = 'red';
-  model.paths.oreille_right_bottom_v2.layer = 'red';
-  model.paths.oreille_right_top.layer = 'red';
-  model.paths.oreille_right_top_v1.layer = 'red';
-  model.paths.oreille_right_top_v2.layer = 'red';
+  if (oreille == true) {
+    model.paths.oreille_left_bottom.layer = 'red';
+    model.paths.oreille_left_bottom_v1.layer = 'red';
+    model.paths.oreille_left_bottom_v2.layer = 'red';
+    model.paths.oreille_left_top.layer = 'red';
+    model.paths.oreille_left_top_v1.layer = 'red';
+    model.paths.oreille_left_top_v2.layer = 'red';
+    model.paths.oreille_right_bottom.layer = 'red';
+    model.paths.oreille_right_bottom_v1.layer = 'red';
+    model.paths.oreille_right_bottom_v2.layer = 'red';
+    model.paths.oreille_right_top.layer = 'red';
+    model.paths.oreille_right_top_v1.layer = 'red';
+    model.paths.oreille_right_top_v2.layer = 'red';
+  }
 
   //makerjs.model.center(model.models.rec)
 

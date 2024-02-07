@@ -45,13 +45,14 @@ app.post('/', async (req, res) => {
     parseFloat(data[0].bottomside),
     parseFloat(data[0].arround),
     parseFloat(data[0].center),
+    data[0].oreilles,
   );
   if (
     await fs.existsSync(
       path.join(
         __dirname,
-        `./public/temp/${data[0].width}x${data[0].long}x${data[0].height}cm${
-          data[0].center == 1.5 ? '_center' : ''
+        `./public/temp/${data[0].width}x${data[0].long}x${data[0].height}cm${data[0].center == 1.5 ? '_center' : ''}${
+          data[0].oreilles ? '_oreilles' : ''
         }.svg`,
       ),
     )

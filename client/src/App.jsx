@@ -4,11 +4,11 @@ import './App.css';
 import { Form, Button, Icon, Label, Radio, Checkbox } from 'semantic-ui-react';
 import { useEffect, useState } from 'react';
 const URL = isDev ? 'http://localhost:4000' : import.meta.env.VITE_HOST;
-
 function App() {
   const [render, setRender] = useState(null);
   const [showDownload, setShowDownload] = useState(false);
   const [checked, setChecked] = useState(false);
+  const [checkedOreilles, setCheckedOreilles] = useState(false);
   const [format, setFormat] = useState(null);
   const [state, setState] = useState({
     width: 0,
@@ -19,6 +19,7 @@ function App() {
     bottomside: 10,
     arround: 0,
     center: 2,
+    oreilles: false,
   });
 
   useEffect(() => {
@@ -85,7 +86,7 @@ function App() {
           setRender(
             `${parseFloat(state.width)}x${parseFloat(state.long)}x${parseFloat(state.height)}cm${
               state.center == 1.5 ? '_center' : ''
-            }.svg`,
+            }${state.oreilles ? '_oreilles' : ''}.svg`,
           );
         } else {
           console.log('error post data');
@@ -209,6 +210,20 @@ function App() {
 
         <Form.Field className="pb-4">
           <Checkbox
+            className="pr-4"
+            id="oreille"
+            name="oreille"
+            label="Oreilles"
+            onChange={(e, data) => {
+              setCheckedOreilles(data.checked);
+              setState({
+                ...state,
+                oreilles: data.checked ? true : false,
+              });
+            }}
+            checked={checkedOreilles}
+          />
+          <Checkbox
             id="center"
             name="center"
             label="Centrer fermeture"
@@ -237,11 +252,7 @@ function App() {
                 type="button"
                 size="small"
                 color="google plus"
-<<<<<<< HEAD
                 content="Telecharger"
-=======
-                content="Download"
->>>>>>> 257730c9cfe0bd6a596911899353827e573dda55
                 value="dxf"
                 onClick={handleDownload}
               />
@@ -257,17 +268,11 @@ function App() {
           </h4>
 
           <object
-<<<<<<< HEAD
+            id="render"
             width="800px"
             data={encodeURI(`${URL}/public/${render}`)}
             type="image/svg+xml"
             className=" max-w-xs mx-auto md:max-w-xl md:max-h-full"
-=======
-            width="auto"
-            className="p-2 max-w-xs mx-auto md:max-h-full"
-            data={encodeURI(`https://${URL}/public/${render}`)}
-            type="image/svg+xml"
->>>>>>> 257730c9cfe0bd6a596911899353827e573dda55
           ></object>
         </div>
       )}
