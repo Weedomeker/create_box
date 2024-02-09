@@ -9,6 +9,7 @@ function App() {
   const [showDownload, setShowDownload] = useState(false);
   const [checked, setChecked] = useState(false);
   const [checkedOreilles, setCheckedOreilles] = useState(false);
+  const [checkedClone, setCheckedClone] = useState(false);
   const [format, setFormat] = useState(null);
   const [state, setState] = useState({
     width: 0,
@@ -20,6 +21,7 @@ function App() {
     arround: 0,
     center: 2,
     oreilles: false,
+    clone: false
   });
 
   useEffect(() => {
@@ -86,7 +88,7 @@ function App() {
           setRender(
             `${parseFloat(state.width)}x${parseFloat(state.long)}x${parseFloat(state.height)}cm${
               state.center == 1.5 ? '_center' : ''
-            }${state.oreilles ? '_oreilles' : ''}.svg`,
+            }${state.oreilles ? '_oreilles' : ''}${state.clone ? '_copy' : ''}.svg`,
           );
         } else {
           console.log('error post data');
@@ -227,6 +229,7 @@ function App() {
             id="center"
             name="center"
             label="Centrer fermeture"
+            className="pr-4"
             onChange={(e, data) => {
               setChecked(data.checked);
               setState({
@@ -236,6 +239,20 @@ function App() {
               });
             }}
             checked={checked}
+          />
+            <Checkbox
+            className="pr-4"
+            id="clone"
+            name="clone"
+            label="Copy"
+            onChange={(e, data) => {
+              setCheckedClone(data.checked);
+              setState({
+                ...state,
+                clone: data.checked ? true : false,
+              });
+            }}
+            checked={checkedClone}
           />
         </Form.Field>
 

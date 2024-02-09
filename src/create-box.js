@@ -5,8 +5,12 @@ const mmToPoint = (n1) => {
   return n1 * 2.8346438836889;
 };
 
-async function createBox(width, long, height, tickness, smallsides, bottomside, arround, center, oreilles) {
-  console.log(oreilles);
+let measure = []
+
+
+async function createBox(width, long, height, tickness, smallsides, bottomside, arround, center, oreilles, clone) {
+
+  
   const model = {
     models: {
       rec: new makerjs.models.Rectangle(long, width),
@@ -39,8 +43,8 @@ async function createBox(width, long, height, tickness, smallsides, bottomside, 
       bottom_v2: new makerjs.paths.Line([long, -bottomside - height - tickness], [long, tickness]),
       bottom_h1: new makerjs.paths.Line([0, -bottomside - height - tickness], [long, -bottomside - height - tickness]),
       //Gauche
-      left_h1: new makerjs.paths.Line([-smallsides, tickness], [-smallsides - height, tickness]),
-      left_h2: new makerjs.paths.Line([-smallsides, width - tickness], [-smallsides - height, width - tickness]),
+      left_h1: new makerjs.paths.Line([-height, tickness], [-smallsides - height, tickness]),
+      left_h2: new makerjs.paths.Line([-height, width - tickness], [-smallsides - height, width - tickness]),
       left_v1: new makerjs.paths.Line([-smallsides - height, width - tickness], [-smallsides - height, tickness]),
       //oreilles Bas Gauche
       oreilles_left_bottom_v1: oreilles ? new makerjs.paths.Line([-height / 8, -smallsides / 2], [0, tickness]) : null,
@@ -169,28 +173,40 @@ async function createBox(width, long, height, tickness, smallsides, bottomside, 
     model.paths.fil4.layer = 'red';
   }
 
-  const svg = makerjs.exporter.toSVG(model, { units: 'cm', layerOptions: { dec: { color: 2 } } });
-  const dxf = makerjs.exporter.toDXF(model, { units: 'cm', layerOptions: { dec: { color: 2 } } });
+  let copy
+  if(clone == true) {
+    const cloneModel = makerjs.cloneObject(model)
+     copy = {models:{old: model, new: cloneModel}}
+    //makerjs.model.rotate(cloneModel, 0)
+    makerjs.model.move(cloneModel, [(long+smallsides+height)+2.5, (-width-smallsides/2)-2.5])
+  }
+  
+  //max dimensions
+  measure.push()
+  measure.push(copy ? makerjs.measure.modelExtents(copy) : makerjs.measure.modelExtents(model))   
+
+  const svg = makerjs.exporter.toSVG(clone ? copy : model, { units: 'cm', layerOptions: { dec: { color: 2 } } });
+  const dxf = makerjs.exporter.toDXF(clone ? copy : model, { units: 'cm', layerOptions: { dec: { color: 2 } } });
 
   try {
     //${width}x${long}x${height}.dxf
     if (fs.existsSync(`./public/temp/`)) {
       await fs.writeFileSync(
-        `./public/temp/${width}x${long}x${height}cm${center == 1.5 ? '_center' : ''}${oreilles ? '_oreilles' : ''}.dxf`,
+        `./public/temp/${width}x${long}x${height}cm${center == 1.5 ? '_center' : ''}${oreilles ? '_oreilles' : ''}${clone ? '_copy' : ''}.dxf`,
         dxf,
       );
       await fs.writeFileSync(
-        `./public/temp/${width}x${long}x${height}cm${center == 1.5 ? '_center' : ''}${oreilles ? '_oreilles' : ''}.svg`,
+        `./public/temp/${width}x${long}x${height}cm${center == 1.5 ? '_center' : ''}${oreilles ? '_oreilles' : ''}${clone ? '_copy' : ''}.svg`,
         svg,
       );
     } else {
       await fs.mkdirSync(`./public/temp/`, { recursive: true });
       await fs.writeFileSync(
-        `./public/temp/${width}x${long}x${height}cm${center == 1.5 ? '_center' : ''}${oreilles ? '_oreilles' : ''}.dxf`,
+        `./public/temp/${width}x${long}x${height}cm${center == 1.5 ? '_center' : ''}${oreilles ? '_oreilles' : ''}${clone ? '_copy' : ''}.dxf`,
         dxf,
       );
       await fs.writeFileSync(
-        `./public/temp/${width}x${long}x${height}cm${center == 1.5 ? '_center' : ''}${oreilles ? '_oreilles' : ''}.svg`,
+        `./public/temp/${width}x${long}x${height}cm${center == 1.5 ? '_center' : ''}${oreilles ? '_oreilles' : ''}${clone ? '_copy' : ''}.svg`,
         svg,
       );
     }
@@ -199,4 +215,4 @@ async function createBox(width, long, height, tickness, smallsides, bottomside, 
   }
 }
 
-module.exports = createBox;
+module.exports = {createBox: createBox, measure: measure};

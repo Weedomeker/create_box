@@ -1,6 +1,7 @@
 require('dotenv').config();
 const fs = require('fs');
-const createBox = require('./src/create-box');
+const createBox = require('./src/create-box').createBox;
+const measure = require('./src/create-box').measure;
 const isDev = require('isdev');
 const path = require('path');
 const express = require('express');
@@ -35,7 +36,8 @@ app.post('/', async (req, res) => {
     }
   }
   data = [];
-  data.push(req.body);
+  data.push(req.body, measure[0]);
+  console.log( measure)
   await createBox(
     parseFloat(data[0].width),
     parseFloat(data[0].long),
@@ -46,6 +48,7 @@ app.post('/', async (req, res) => {
     parseFloat(data[0].arround),
     parseFloat(data[0].center),
     data[0].oreilles,
+    data[0].clone
   );
   if (
     await fs.existsSync(
@@ -53,6 +56,8 @@ app.post('/', async (req, res) => {
         __dirname,
         `./public/temp/${data[0].width}x${data[0].long}x${data[0].height}cm${data[0].center == 1.5 ? '_center' : ''}${
           data[0].oreilles ? '_oreilles' : ''
+        }${
+          data[0].clone ? '_copy' : ''
         }.svg`,
       ),
     )
@@ -99,7 +104,7 @@ app.get('/download/svg', (req, res) => {
 });
 
 app.get('/api', (req, res) => {
-  res.send(data[0]);
+  res.send(data);
 });
 
 app.listen(PORT, () => {

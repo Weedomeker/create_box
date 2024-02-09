@@ -1,4 +1,4 @@
-function createBox(width, long, height, tickness, smallsides, bottomside, arround, center) {
+function createBox() {
   const makerjs = require('makerjs');
 
   width = 30;
@@ -9,7 +9,8 @@ function createBox(width, long, height, tickness, smallsides, bottomside, arroun
   bottomside = 10;
   arround = 0;
   center = 1.5;
-  oreille = false;
+  oreille = true;
+  clone = true
 
   const model = {
     models: {
@@ -43,8 +44,8 @@ function createBox(width, long, height, tickness, smallsides, bottomside, arroun
       bottom_v2: new makerjs.paths.Line([long, -bottomside - height - tickness], [long, tickness]),
       bottom_h1: new makerjs.paths.Line([0, -bottomside - height - tickness], [long, -bottomside - height - tickness]),
       //Gauche
-      left_h1: new makerjs.paths.Line([-smallsides, tickness], [-smallsides - height, tickness]),
-      left_h2: new makerjs.paths.Line([-smallsides, width - tickness], [-smallsides - height, width - tickness]),
+      left_h1: new makerjs.paths.Line([-height, tickness], [-smallsides -height, tickness]),
+      left_h2: new makerjs.paths.Line([-height, width - tickness], [-smallsides - height, width - tickness]),
       left_v1: new makerjs.paths.Line([-smallsides - height, width - tickness], [-smallsides - height, tickness]),
 
       //Oreille Bas Gauche
@@ -174,7 +175,16 @@ function createBox(width, long, height, tickness, smallsides, bottomside, arroun
     model.paths.fil4.layer = 'red';
   }
 
-  const svg = makerjs.exporter.toSVG(model, { units: 'mm', layerOptions: { dec: { color: 2 } } });
+  let copy
+if(clone == true) {
+  const cloneModel = makerjs.cloneObject(model)
+   copy = {models:{old: model, new: cloneModel}}
+  //makerjs.model.rotate(cloneModel, 0)
+  makerjs.model.move(cloneModel, [(long+smallsides+height)+2, (-width-smallsides/2)-2])
+}
+  
+
+  const svg = makerjs.exporter.toSVG(clone ? copy : model, { units: 'mm', layerOptions: { dec: { color: 2 } } });
   const dxf = makerjs.exporter.toDXF(model, { units: 'cm', layerOptions: { dec: { color: 2 } } });
 
   document.write(svg);
